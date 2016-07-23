@@ -168,7 +168,7 @@ class MyComponent extends Component {
     
         return (
             <div>
-                Foo and bar now represent position and size, respectively.
+                The foo and bar props now represent position and size, respectively.
             </div>
         );
     }
