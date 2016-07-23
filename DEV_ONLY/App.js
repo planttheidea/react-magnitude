@@ -25,7 +25,13 @@ const IMG_STYLES = {
   width: 719
 };
 
-@measure
+const options = {
+  renderOnResize: false,
+  positionProp: 'foo',
+  sizeProp: 'bar'
+};
+
+@measure(options)
 class Div extends Component {
   render() {
     const {
@@ -34,7 +40,9 @@ class Div extends Component {
 
     console.group('Div');
     console.log('div position', this.props.position);
+    console.log('div foo', this.props.foo);
     console.log('div size', this.props.size);
+    console.log('div bar', this.props.bar);
     console.groupEnd();
 
     return (

@@ -14,6 +14,7 @@ import {
   getValidKeys,
   getValues,
   isArray,
+  isObject,
   isString
 } from './utils';
 
@@ -51,9 +52,16 @@ const setRaf = () => {
  *
  * @param {Component} OriginalComponent
  * @param {array<string>} keys
+ * @param {object} options={}
  * @returns {RemeasureComponent}
  */
-const getHigherOrderComponent = (OriginalComponent, keys) => {
+const getHigherOrderComponent = (OriginalComponent, keys, options = {}) => {
+  const {
+    renderOnResize = true,
+    positionProp = 'position',
+    sizeProp = 'size'
+  } = options;
+
   class RemeasureComponent extends Component {
     constructor(props) {
       super(props);
@@ -68,9 +76,11 @@ const getHigherOrderComponent = (OriginalComponent, keys) => {
 
       this.setValues(domElement);
 
-      onElementResize(domElement, () => {
-        this.setValues(domElement);
-      });
+      if (renderOnResize) {
+        onElementResize(domElement, () => {
+          this.setValues(domElement);
+        });
+      }
     }
 
     componentDidUpdate() {
@@ -129,7 +139,10 @@ const getHigherOrderComponent = (OriginalComponent, keys) => {
     };
 
     render() {
-      const values = getValues(keys, this.state);
+      const values = getValues(keys, this.state, {
+        positionProp,
+        sizeProp
+      });
 
       return (
         <OriginalComponent
@@ -148,9 +161,10 @@ const getHigherOrderComponent = (OriginalComponent, keys) => {
  * into OriginalComponent as an object under the prop name size and position
  *
  * @param {Component|array<string>} keys
+ * @param {object} options
  * @returns {RemeasureComponent}
  */
-const measure = (keys) => {
+const measure = (keys, options) => {
   if (isString(keys)) {
     switch (keys) {
       case 'size':
@@ -171,7 +185,15 @@ const measure = (keys) => {
     const validKeys = getValidKeys(keys, allKeys);
 
     return (OriginalComponent) => {
-      return getHigherOrderComponent(OriginalComponent, validKeys);
+      return getHigherOrderComponent(OriginalComponent, validKeys, options);
+    };
+  }
+
+  if (isObject(keys)) {
+    options = keys;
+
+    return (OriginalComponent) => {
+      return getHigherOrderComponent(OriginalComponent, allKeys, options);
     };
   }
 
