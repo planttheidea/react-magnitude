@@ -28,6 +28,10 @@ import {
   initialState
 } from './constants';
 
+const POSITION_PROP_DEFAULT = 'position';
+const RENDER_ON_RESIZE_DEFAULT = true;
+const SIZE_PROP_DEFAULT = 'size';
+
 let raf;
 
 /**
@@ -57,9 +61,9 @@ const setRaf = () => {
  */
 const getHigherOrderComponent = (OriginalComponent, keys, options = {}) => {
   const {
-    renderOnResize = true,
-    positionProp = 'position',
-    sizeProp = 'size'
+    positionProp = POSITION_PROP_DEFAULT,
+    renderOnResize = RENDER_ON_RESIZE_DEFAULT,
+    sizeProp = SIZE_PROP_DEFAULT
   } = options;
 
   class RemeasureComponent extends Component {

@@ -93,6 +93,10 @@ var Remeasure =
 	// constants
 	
 	
+	var POSITION_PROP_DEFAULT = 'position';
+	var RENDER_ON_RESIZE_DEFAULT = true;
+	var SIZE_PROP_DEFAULT = 'size';
+	
 	var raf = void 0;
 	
 	/**
@@ -117,12 +121,12 @@ var Remeasure =
 	 */
 	var getHigherOrderComponent = function getHigherOrderComponent(OriginalComponent, keys) {
 	  var options = arguments.length <= 2 || arguments[2] === undefined ? {} : arguments[2];
-	  var _options$renderOnResi = options.renderOnResize;
-	  var renderOnResize = _options$renderOnResi === undefined ? true : _options$renderOnResi;
 	  var _options$positionProp = options.positionProp;
-	  var positionProp = _options$positionProp === undefined ? 'position' : _options$positionProp;
+	  var positionProp = _options$positionProp === undefined ? POSITION_PROP_DEFAULT : _options$positionProp;
+	  var _options$renderOnResi = options.renderOnResize;
+	  var renderOnResize = _options$renderOnResi === undefined ? RENDER_ON_RESIZE_DEFAULT : _options$renderOnResi;
 	  var _options$sizeProp = options.sizeProp;
-	  var sizeProp = _options$sizeProp === undefined ? 'size' : _options$sizeProp;
+	  var sizeProp = _options$sizeProp === undefined ? SIZE_PROP_DEFAULT : _options$sizeProp;
 	
 	  var RemeasureComponent = function (_Component) {
 	    _inherits(RemeasureComponent, _Component);
