@@ -271,10 +271,8 @@ var Remeasure =
 	  }
 	
 	  if ((0, _utils.isObject)(keys)) {
-	    options = keys;
-	
 	    return function (OriginalComponent) {
-	      return getHigherOrderComponent(OriginalComponent, _constants.allKeys, options);
+	      return getHigherOrderComponent(OriginalComponent, _constants.allKeys, keys);
 	    };
 	  }
 	

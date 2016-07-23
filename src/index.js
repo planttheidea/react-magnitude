@@ -194,10 +194,8 @@ const measure = (keys, options) => {
   }
 
   if (isObject(keys)) {
-    options = keys;
-
     return (OriginalComponent) => {
-      return getHigherOrderComponent(OriginalComponent, allKeys, options);
+      return getHigherOrderComponent(OriginalComponent, allKeys, keys);
     };
   }
 
