@@ -86,7 +86,7 @@ These properties are retrieved on mount, but will also automatically update if t
 
 If you want to limit the items that are injected into the component, you can pass either a key or array of keys to the decorator before wrapping the component.
 
-**measure(`string|array<string>|object[, object]`)** *returns `function`*
+**measure(`String|Array<String>|Object[, Object]`)** *returns `Function`*
 
 Examples:
 

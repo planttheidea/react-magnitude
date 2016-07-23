@@ -31,7 +31,7 @@ const options = {
   sizeProp: 'bar'
 };
 
-@measure(options)
+@measure
 class Div extends Component {
   render() {
     const {
@@ -40,9 +40,29 @@ class Div extends Component {
 
     console.group('Div');
     console.log('div position', this.props.position);
-    console.log('div foo', this.props.foo);
     console.log('div size', this.props.size);
-    console.log('div bar', this.props.bar);
+    console.groupEnd();
+
+    return (
+      <div style={DIV_STYLES}>
+        {children}
+      </div>
+    );
+  }
+}
+
+@measure(options)
+class AnotherDiv extends Component {
+  render() {
+    const {
+      children
+    } = this.props;
+
+    console.group('AnotherDiv');
+    console.log('another div position', this.props.position);
+    console.log('another div foo', this.props.foo);
+    console.log('another div size', this.props.size);
+    console.log('another div bar', this.props.bar);
     console.groupEnd();
 
     return (
@@ -122,6 +142,10 @@ const App = measureWithSpecificKeys(({position, size}) => {
       <Div>
         I am a DIV with stuff
       </Div>
+
+      <AnotherDiv>
+        I am a another DIV with stuff
+      </AnotherDiv>
 
       <Section>
         I am a SECTION that is scrollable with...
