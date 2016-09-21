@@ -89,7 +89,6 @@
     "compile-for-publish": "npm run lint && npm run test && npm run transpile && npm run dist",
     "dev": "NODE_ENV=development ./node_modules/webpack-dev-server/bin/webpack-dev-server.js --progress --colors --config=webpack.config.dev.js",
     "dist": "npm run build && npm run build-minified",
-    "gh-pages-dev": "NODE_ENV=development ./node_modules/webpack-dev-server/bin/webpack-dev-server.js --progress --colors --config=webpack.config.gh-pages-dev.js",
     "lint": "NODE_ENV=test ./node_modules/eslint/bin/eslint.js src",
     "prepublish": "in-publish && npm run compile-for-publish || in-install",
     "test": "NODE_ENV=test ava --no-cache",
