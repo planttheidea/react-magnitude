@@ -209,8 +209,8 @@ const getValuesProperties = (keys, currentState) => {
  */
 const getValues = (keys, currentState, {positionProp, sizeProp}) => {
   const {
-    hasSize,
     hasPosition,
+    hasSize,
     position,
     size
   } = getValuesProperties(keys, currentState);
