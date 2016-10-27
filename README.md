@@ -194,7 +194,7 @@ const MyStatelessComponent = measureWithKeysAndOptions(({height, width}) => {
 };
 
 // you can even use the custom props with the shorthand notation
-@measure('bar', FOO_BAR_OPTIONS)
+@measure('bar', {sizeProp: 'bar'})
 class MySizedComponent extends Component {
     render() {
         return (
