@@ -21,7 +21,7 @@ const SECTION_STYLES = {
 };
 
 const IMG_STYLES = {
-  height: 'atuo',
+  height: 'auto',
   maxWidth: '100%',
   width: 719
 };
