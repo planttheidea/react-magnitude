@@ -10,8 +10,7 @@
     },
     "failFast": true,
     "files": [
-      "./test/utils.js",
-      "./test/index.js"
+      "test/*.js"
     ],
     "require": [
       "babel-register",
