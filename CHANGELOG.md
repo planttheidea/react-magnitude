@@ -2,7 +2,7 @@
 
 #### 2.0.0
 * Major refactor to be more functional (same functionality, but due to scope of refactor there may be regressions)
-* Performance improvement by nearly 30%
+* Substantial performance improvement
 * Zero out measurements when element is null
 
 #### 1.6.1

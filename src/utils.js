@@ -10,6 +10,7 @@ import some from 'lodash/some';
 import {
   ALL_POSITION_KEYS,
   ALL_SIZE_KEYS,
+  CLIENT_RECT_TYPE,
   NATURAL_REGEXP,
   VOID_ELEMENT_TAG_NAMES
 } from './constants';
@@ -67,9 +68,9 @@ export const getElementValues = (element, keys) => {
   const boundingClientRect = element.getBoundingClientRect();
 
   return reduce(keys, (values, {key, source}) => {
-    values[key] = Math.round(source === 'clientRect' ?
+    values[key] = source === CLIENT_RECT_TYPE ?
       boundingClientRect[key] :
-      getNaturalDimensionValue(element, key));
+      getNaturalDimensionValue(element, key);
 
     return values;
   }, {});

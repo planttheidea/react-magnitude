@@ -61,6 +61,7 @@
     "rimraf": "^2.5.4",
     "sinon": "1.17.6",
     "webpack": "^1.14.0",
+    "webpack-dashboard": "^0.2.0",
     "webpack-dev-server": "1.16.2"
   },
   "homepage": "https://github.com/planttheidea/remeasure#readme",
@@ -87,20 +88,20 @@
     "url": "git+https://github.com/planttheidea/remeasure.git"
   },
   "scripts": {
-    "build": "NODE_ENV=development ./node_modules/webpack/bin/webpack.js --progress --colors",
-    "build:minified": "NODE_ENV=production ./node_modules/webpack/bin/webpack.js --progress --colors --config=webpack.config.minified.js",
+    "build": "NODE_ENV=development webpack --progress --colors",
+    "build:minified": "NODE_ENV=production webpack --progress --colors --config=webpack.config.minified.js",
     "clean": "rimraf lib && rimraf dist && rimraf docs",
-    "dev": "NODE_ENV=development ./node_modules/webpack-dev-server/bin/webpack-dev-server.js --progress --colors --config=webpack.config.dev.js",
+    "dev": "NODE_ENV=development webpack-dashboard -p 3210 -- webpack-dev-server --colors --config=webpack.config.dev.js",
     "dist": "npm run build && npm run build:minified",
     "docs": "jsdoc -c ./jsdoc.config.json && git add --all",
-    "lint": "NODE_ENV=test ./node_modules/eslint/bin/eslint.js src",
+    "lint": "NODE_ENV=test eslint src",
     "prepublish": "in-publish && npm run prepublish:compile || echo ''",
     "prepublish:compile": "npm run lint && npm run clean && npm run test:coverage && npm run transpile && npm run dist && npm run docs",
     "start": "npm run dev",
     "test": "NODE_ENV=test ava --no-cache",
     "test:coverage": "nyc npm test",
     "test:watch": "NODE_ENV=test ava --watch",
-    "transpile": "./node_modules/babel-cli/lib/babel/index.js -d lib/ src/"
+    "transpile": "babel src --out-dir lib"
   },
   "version": "2.0.0"
 }

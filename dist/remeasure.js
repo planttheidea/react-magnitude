@@ -106,6 +106,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	/**
+	 * @module remeasure
+	 */
+	
+	/**
 	 * @function measure
 	 *
 	 * @description
@@ -515,6 +519,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	var ALL_SIZE_KEYS = exports.ALL_SIZE_KEYS = [].concat(DOM_ELEMENT_SIZE_KEYS, BOUNDING_CLIENT_RECT_SIZE_KEYS);
 	
 	var ALL_KEYS = exports.ALL_KEYS = [].concat(_toConsumableArray(ALL_POSITION_KEYS), _toConsumableArray(ALL_SIZE_KEYS));
+	
+	var CLIENT_RECT_TYPE = exports.CLIENT_RECT_TYPE = 'clientRect';
+	var ELEMENT_TYPE = exports.ELEMENT_TYPE = 'element';
 
 /***/ },
 /* 12 */
@@ -591,7 +598,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    sizeProp: sizeProp
 	  };
 	
-	  var selectedKeys = [].concat((0, _utils.getKeysSubsetWithType)(_constants.ALL_BOUNDING_CLIENT_RECT_KEYS, keys, 'clientRect', propKeyNames)).concat((0, _utils.getKeysSubsetWithType)(_constants.ALL_DOM_ELEMENT_KEYS, keys, 'element', propKeyNames));
+	  var selectedKeys = [].concat((0, _utils.getKeysSubsetWithType)(_constants.ALL_BOUNDING_CLIENT_RECT_KEYS, keys, _constants.CLIENT_RECT_TYPE, propKeyNames)).concat((0, _utils.getKeysSubsetWithType)(_constants.ALL_DOM_ELEMENT_KEYS, keys, _constants.ELEMENT_TYPE, propKeyNames));
 	
 	  var initialState = (0, _utils.reduceStateToMatchingKeys)(selectedKeys);
 	
@@ -2088,7 +2095,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    var key = _ref.key,
 	        source = _ref.source;
 	
-	    values[key] = Math.round(source === 'clientRect' ? boundingClientRect[key] : getNaturalDimensionValue(element, key));
+	    values[key] = source === _constants.CLIENT_RECT_TYPE ? boundingClientRect[key] : getNaturalDimensionValue(element, key);
 	
 	    return values;
 	  }, {});

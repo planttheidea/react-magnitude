@@ -18,8 +18,12 @@ import {
 } from '../src/utils';
 
 import {
+  ALL_BOUNDING_CLIENT_RECT_KEYS,
+  ALL_DOM_ELEMENT_KEYS,
   ALL_POSITION_KEYS,
-  ALL_SIZE_KEYS
+  ALL_SIZE_KEYS,
+  CLIENT_RECT_TYPE,
+  ELEMENT_TYPE
 } from '../src/constants';
 
 const sleep = (ms = 0) => {
@@ -36,8 +40,59 @@ test('if createIsKeyType creates a function', (t) => {
   t.true(_.isFunction(result));
 });
 
-test.todo('getKeyType');
-test.todo('getKeysSubsetWithType');
+test('if getKeyType returns the correct type of key', (t) => {
+  const propTypes = {
+    positionProp: 'foo',
+    sizeProp: 'bar'
+  };
+  const position = 'left';
+  const size = 'width';
+  const nil = 'foo';
+
+  t.is(getKeyType(position, propTypes), propTypes.positionProp);
+  t.is(getKeyType(size, propTypes), propTypes.sizeProp);
+  t.is(getKeyType(nil, propTypes), null);
+});
+
+test('if getKeysSubsetWithType returns an array of object with source and type', (t) => {
+  const propTypes = {
+    positionProp: 'foo',
+    sizeProp: 'bar'
+  };
+
+  const rectKeys = ['left', 'height'];
+  const elKeys = ['scrollTop', 'offsetWidth'];
+
+  const rectExpectedResult = [
+    {
+      key: rectKeys[0],
+      source: CLIENT_RECT_TYPE,
+      type: propTypes.positionProp
+    }, {
+      key: rectKeys[1],
+      source: CLIENT_RECT_TYPE,
+      type: propTypes.sizeProp
+    }
+  ];
+  const rectResult = getKeysSubsetWithType(ALL_BOUNDING_CLIENT_RECT_KEYS, rectKeys, CLIENT_RECT_TYPE, propTypes);
+
+  t.deepEqual(rectResult, rectExpectedResult);
+
+  const elExpectedResult = [
+    {
+      key: elKeys[0],
+      source: ELEMENT_TYPE,
+      type: propTypes.positionProp
+    }, {
+      key: elKeys[1],
+      source: ELEMENT_TYPE,
+      type: propTypes.sizeProp
+    }
+  ];
+  const elResult = getKeysSubsetWithType(ALL_DOM_ELEMENT_KEYS, elKeys, ELEMENT_TYPE, propTypes);
+
+  t.deepEqual(elResult, elExpectedResult);
+});
 
 test('if getNaturalDimensionValue gets the correct value based on key', (t) => {
   const objectWithoutNaturalValue = {
@@ -154,7 +209,17 @@ test('if haveValuesChanged checks for changes between the two objects', (t) => {
   t.true(haveValuesChanged(keys, values, changedValues));
 });
 
-test.todo('isElementVoidTag');
+test('if isElementVoidTag determines if element is a void tag or not', (t) => {
+  const img = {
+    tagName: 'IMG'
+  };
+  const div = {
+    tagName: 'DIV'
+  };
+
+  t.true(isElementVoidTag(img));
+  t.false(isElementVoidTag(div));
+});
 
 test('if isPositionKey determines if the key is a position property', (t) => {
   ALL_POSITION_KEYS.forEach((key) => {
@@ -175,4 +240,16 @@ test('if isSizeKey determines if the key is a size property', (t) => {
     t.true(isSizeKey(key));
   });
 });
-test.todo('reduceStateToMatchingKeys');
+
+test('if reduceStateToMatchingKeys will return the keys mapped to an object with values of 0', (t) => {
+  const keys = [{key: 'foo'}, {key: 'bar'}, {key: 'baz'}];
+
+  const expectedResult = {
+    foo: 0,
+    bar: 0,
+    baz: 0
+  };
+  const result = reduceStateToMatchingKeys(keys);
+
+  t.deepEqual(result, expectedResult);
+});

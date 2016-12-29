@@ -80,3 +80,6 @@ export const ALL_KEYS = [
   ...ALL_POSITION_KEYS,
   ...ALL_SIZE_KEYS
 ];
+
+export const CLIENT_RECT_TYPE = 'clientRect';
+export const ELEMENT_TYPE = 'element';

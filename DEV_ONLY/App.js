@@ -1,5 +1,6 @@
 import React, {
-  Component
+  Component,
+  PureComponent
 } from 'react';
 import {
   render
@@ -8,7 +9,7 @@ import {
 import measure from '../src/index';
 
 @measure
-class NoParams extends Component {
+class NoParams extends PureComponent {
   render() {
     const {
       children,
@@ -30,7 +31,7 @@ class NoParams extends Component {
 }
 
 @measure('size')
-class SizeOnly extends Component {
+class SizeOnly extends PureComponent {
   render() {
     const {
       children,
@@ -52,7 +53,7 @@ class SizeOnly extends Component {
 }
 
 @measure('position')
-class PositionOnly extends Component {
+class PositionOnly extends PureComponent {
   render() {
     const {
       children,
@@ -74,7 +75,7 @@ class PositionOnly extends Component {
 }
 
 @measure(['height', 'width', 'top', 'left'])
-class SpecificProperties extends Component {
+class SpecificProperties extends PureComponent {
   render() {
     const {
       children,
@@ -96,7 +97,7 @@ class SpecificProperties extends Component {
 }
 
 @measure({positionProp: 'foo', sizeProp: 'bar'})
-class CustomCategories extends Component {
+class CustomCategories extends PureComponent {
   render() {
     const {
       bar,
@@ -118,7 +119,7 @@ class CustomCategories extends Component {
 }
 
 @measure(['height', 'width', 'top', 'left'], {positionProp: 'foo', sizeProp: 'bar'})
-class CustomCategoriesWithSpecificProperties extends Component {
+class CustomCategoriesWithSpecificProperties extends PureComponent {
   render() {
     const {
       bar,

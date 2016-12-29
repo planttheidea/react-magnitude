@@ -14,7 +14,9 @@ import {
 import {
   ALL_BOUNDING_CLIENT_RECT_KEYS,
   ALL_DOM_ELEMENT_KEYS,
+  CLIENT_RECT_TYPE,
   DEBOUNCE_VALUE_DEFAULT,
+  ELEMENT_TYPE,
   FLATTEN_DEFAULT,
   POSITION_PROP_DEFAULT,
   RENDER_ON_RESIZE_DEFAULT,
@@ -49,8 +51,8 @@ const getMeasuredComponent = (keys, options) => {
   };
 
   const selectedKeys = []
-    .concat(getKeysSubsetWithType(ALL_BOUNDING_CLIENT_RECT_KEYS, keys, 'clientRect', propKeyNames))
-    .concat(getKeysSubsetWithType(ALL_DOM_ELEMENT_KEYS, keys, 'element', propKeyNames));
+    .concat(getKeysSubsetWithType(ALL_BOUNDING_CLIENT_RECT_KEYS, keys, CLIENT_RECT_TYPE, propKeyNames))
+    .concat(getKeysSubsetWithType(ALL_DOM_ELEMENT_KEYS, keys, ELEMENT_TYPE, propKeyNames));
 
   const initialState = reduceStateToMatchingKeys(selectedKeys);
 
