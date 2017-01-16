@@ -6,6 +6,7 @@ Get position and size of the DOM element for any React Component
 * [Installation](#installation)
 * [Usage](#usage)
 * [Advanced usage](#advanced-usage)
+* [Convenience methods](#convenience-methods)
 * [Caveats](#caveats)
 * [Support](#support)
 * [Development](#development)
@@ -214,6 +215,42 @@ class MySizedComponent extends Component {
     }
 }
 ```
+
+### Convenience methods
+
+For each key that is measured, a convenience function exists on the main `measure` function which is a shorthand for `measure(property, {flatten: true})`. Example:
+
+```javascript
+@measure.width
+class MyMeasuredComponent extends Component {
+  render() {
+    return (
+      <div>
+        I have access to width at this.props.width.
+      </div>
+    );
+  }
+}
+```
+
+These accept options just like the standard measure as well, they are just merged with the `flatten: true` value.
+
+There is also a generic convenience function for flattening if you want multiple properties, which is just `measure.flat`:
+
+```javascript
+@measure.flat(['height', 'width'])
+class MyMeasuredComponent extends Component {
+  render() {
+    return (
+      <div>
+        I have access to height and width directly on this.props.
+      </div>
+    );
+  }
+}
+```
+
+This also accepts options just like the specific convenience functions.
 
 ### Caveats
 

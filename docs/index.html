@@ -70,7 +70,7 @@
 
 
 
-    <h3>remeasure 2.0.1</h3>
+    <h3>remeasure 2.1.0</h3>
 
 
 
@@ -269,7 +269,30 @@ class MySizedComponent extends Component {
             &lt;/div>
         );
     }
-}</code></pre><h3 id="caveats">Caveats</h3>
+}</code></pre><h3 id="convenience-methods">Convenience methods</h3>
+<p>For each key that is measured, a convenience function exists on the main <code>measure</code> function which is a shorthand for <code>measure(property, {flatten: true})</code>. Example:</p>
+<pre class="prettyprint source lang-javascript"><code>@measure.width
+class MyMeasuredComponent extends Component {
+  render() {
+    return (
+      &lt;div>
+        I have access to width at this.props.width.
+      &lt;/div>
+    );
+  }
+}</code></pre><p>These accept options just like the standard measure as well, they are just merged with the <code>flatten: true</code> value.</p>
+<p>There is also a generic convenience function for flattening if you want multiple properties, which is just <code>measure.flat</code>:</p>
+<pre class="prettyprint source lang-javascript"><code>@measure.flat(['height', 'width'])
+class MyMeasuredComponent extends Component {
+  render() {
+    return (
+      &lt;div>
+        I have access to height and width directly on this.props.
+      &lt;/div>
+    );
+  }
+}</code></pre><p>This also accepts options just like the specific convenience functions.</p>
+<h3 id="caveats">Caveats</h3>
 <p>A couple things to keep in mind when using <code>remeasure</code>:</p>
 <p><strong>Void tags cannot detect element resize</strong></p>
 <p>If children on a tag are considered invalid HTML (such as for <code>&lt;input/&gt;</code>, <code>&lt;img/&gt;</code>, etc), then the internal element resize detector cannot not work. The easy solution to this is to update the component via props (on update a recalculation of values is triggered).</p>

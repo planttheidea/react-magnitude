@@ -63,9 +63,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	'use strict';
 	
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
+	exports.__esModule = true;
 	
 	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; // external dependencies
 	
@@ -162,8 +160,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	    return (0, _getMeasuredComponent2.default)(_keys, options);
 	  }
 	
-	  throw new TypeError('You did not pass the correct object type for the measure decorator.');
+	  return (0, _getMeasuredComponent2.default)(_constants.ALL_KEYS, options);
 	};
+	
+	measure.flat = (0, _utils.createFlattenConvenienceFunction)(measure);
+	
+	_constants.ALL_KEYS.forEach(function (key) {
+	  measure[key] = (0, _utils.createFlattenConvenienceFunction)(measure, key);
+	});
 	
 	exports.default = measure;
 	module.exports = exports['default'];
@@ -486,12 +490,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	'use strict';
 	
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	
-	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
-	
+	exports.__esModule = true;
 	var DEBOUNCE_VALUE_DEFAULT = exports.DEBOUNCE_VALUE_DEFAULT = 0;
 	var FLATTEN_DEFAULT = exports.FLATTEN_DEFAULT = false;
 	var POSITION_PROP_DEFAULT = exports.POSITION_PROP_DEFAULT = 'position';
@@ -518,7 +517,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	var ALL_SIZE_KEYS = exports.ALL_SIZE_KEYS = [].concat(DOM_ELEMENT_SIZE_KEYS, BOUNDING_CLIENT_RECT_SIZE_KEYS);
 	
-	var ALL_KEYS = exports.ALL_KEYS = [].concat(_toConsumableArray(ALL_POSITION_KEYS), _toConsumableArray(ALL_SIZE_KEYS));
+	var ALL_KEYS = exports.ALL_KEYS = [].concat(ALL_POSITION_KEYS, ALL_SIZE_KEYS);
 	
 	var CLIENT_RECT_TYPE = exports.CLIENT_RECT_TYPE = 'clientRect';
 	var ELEMENT_TYPE = exports.ELEMENT_TYPE = 'element';
@@ -529,13 +528,9 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	'use strict';
 	
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
+	exports.__esModule = true;
 	
 	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-	
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 	
 	var _elementResizeEvent = __webpack_require__(13);
 	
@@ -605,8 +600,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	      _inherits(MeasuredComponent, _Component);
 	
 	      function MeasuredComponent() {
-	        var _ref;
-	
 	        var _temp, _this, _ret;
 	
 	        _classCallCheck(this, MeasuredComponent);
@@ -615,7 +608,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	          args[_key] = arguments[_key];
 	        }
 	
-	        return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = MeasuredComponent.__proto__ || Object.getPrototypeOf(MeasuredComponent)).call.apply(_ref, [this].concat(args))), _this), _this.state = _extends({}, initialState), _this.element = null, _this.getScopedValues = (0, _moize2.default)(_utils.getScopedValues, {
+	        return _ret = (_temp = (_this = _possibleConstructorReturn(this, _Component.call.apply(_Component, [this].concat(args))), _this), _this.state = _extends({}, initialState), _this.element = null, _this.getScopedValues = (0, _moize2.default)(_utils.getScopedValues, {
 	          maxSize: 25
 	        }), _this.hasResize = false, _this.clearValues = function () {
 	          var emptyValues = (0, _utils.reduceStateToMatchingKeys)(selectedKeys);
@@ -662,119 +655,114 @@ return /******/ (function(modules) { // webpackBootstrap
 	        }, _temp), _possibleConstructorReturn(_this, _ret);
 	      }
 	
-	      _createClass(MeasuredComponent, [{
-	        key: 'componentDidMount',
-	        value: function componentDidMount() {
-	          var element = this.getDOMElement();
+	      MeasuredComponent.prototype.componentDidMount = function componentDidMount() {
+	        var element = this.getDOMElement();
 	
-	          if (element) {
-	            this.setElement(element);
-	            this.updateValuesViaRaf();
-	          }
-	
-	          if (renderOnResize) {
-	            this.setElementResize();
-	          }
-	        }
-	      }, {
-	        key: 'componentDidUpdate',
-	        value: function componentDidUpdate() {
-	          var element = this.getDOMElement();
-	
+	        if (element) {
 	          this.setElement(element);
-	
-	          if (element) {
-	            this.updateValuesViaRaf();
-	          } else {
-	            this.clearValues();
-	          }
-	
-	          if (renderOnResize && !this.hasResize) {
-	            this.setElementResize();
-	          }
+	          this.updateValuesViaRaf();
 	        }
 	
-	        /**
-	         * @private
-	         *
-	         * @function clearValues
-	         *
-	         * @description
-	         * reset all values to 0 if there is no element present
-	         */
-	
-	
-	        /**
-	         * @private
-	         *
-	         * @function getDOMElement
-	         *
-	         * @description
-	         * get the DOM element specific to the component
-	         *
-	         * @returns {HTMLElement|null}
-	         */
-	
-	
-	        /**
-	         * @private
-	         *
-	         * @function setElement
-	         *
-	         * @description
-	         * assign the element to the instance
-	         *
-	         * @param {HTMLElement|null} element
-	         */
-	
-	
-	        /**
-	         * @private
-	         *
-	         * @function setElementResize
-	         *
-	         * @description
-	         * assign the onResize listener to the element
-	         */
-	
-	
-	        /**
-	         * @private
-	         *
-	         * @function updateValuesIfChanged
-	         *
-	         * @description
-	         * get the new values and assign them to state if they have changed
-	         */
-	
-	
-	        /**
-	         * @private
-	         *
-	         * @function updateValuesViaDebounce
-	         *
-	         * @description
-	         * update the values via debounce value
-	         */
-	
-	
-	        /**
-	         * @private
-	         *
-	         * @function updateValuesViaRaf
-	         *
-	         * @description
-	         * update the values via requestAnimationFrame
-	         */
-	
-	      }, {
-	        key: 'render',
-	        value: function render() {
-	          var values = this.getScopedValues(selectedKeys, this.state, flatten);
-	
-	          return _react2.default.createElement(PassedComponent, _extends({}, this.props, values));
+	        if (renderOnResize) {
+	          this.setElementResize();
 	        }
-	      }]);
+	      };
+	
+	      MeasuredComponent.prototype.componentDidUpdate = function componentDidUpdate() {
+	        var element = this.getDOMElement();
+	
+	        this.setElement(element);
+	
+	        if (element) {
+	          this.updateValuesViaRaf();
+	        } else {
+	          this.clearValues();
+	        }
+	
+	        if (renderOnResize && !this.hasResize) {
+	          this.setElementResize();
+	        }
+	      };
+	
+	      /**
+	       * @private
+	       *
+	       * @function clearValues
+	       *
+	       * @description
+	       * reset all values to 0 if there is no element present
+	       */
+	
+	
+	      /**
+	       * @private
+	       *
+	       * @function getDOMElement
+	       *
+	       * @description
+	       * get the DOM element specific to the component
+	       *
+	       * @returns {HTMLElement|null}
+	       */
+	
+	
+	      /**
+	       * @private
+	       *
+	       * @function setElement
+	       *
+	       * @description
+	       * assign the element to the instance
+	       *
+	       * @param {HTMLElement|null} element
+	       */
+	
+	
+	      /**
+	       * @private
+	       *
+	       * @function setElementResize
+	       *
+	       * @description
+	       * assign the onResize listener to the element
+	       */
+	
+	
+	      /**
+	       * @private
+	       *
+	       * @function updateValuesIfChanged
+	       *
+	       * @description
+	       * get the new values and assign them to state if they have changed
+	       */
+	
+	
+	      /**
+	       * @private
+	       *
+	       * @function updateValuesViaDebounce
+	       *
+	       * @description
+	       * update the values via debounce value
+	       */
+	
+	
+	      /**
+	       * @private
+	       *
+	       * @function updateValuesViaRaf
+	       *
+	       * @description
+	       * update the values via requestAnimationFrame
+	       */
+	
+	
+	      MeasuredComponent.prototype.render = function render() {
+	        var values = this.getScopedValues(selectedKeys, this.state, flatten);
+	
+	        return _react2.default.createElement(PassedComponent, _extends({}, this.props, values));
+	      };
 	
 	      return MeasuredComponent;
 	    }(_react.Component);
@@ -1184,6 +1172,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	 * @module moize
 	 */
 	
+	// external dependencies
+	var INFINITY = Number.POSITIVE_INFINITY;
+	
 	/**
 	 * @function moize
 	 *
@@ -1220,7 +1211,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	 */
 	
 	
-	// external dependencies
+	// utils
 	var moize = function moize(fn) {
 	  var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
 	  var _options$cache = options.cache,
@@ -1228,17 +1219,17 @@ return /******/ (function(modules) { // webpackBootstrap
 	      _options$isPromise = options.isPromise,
 	      isPromise = _options$isPromise === undefined ? false : _options$isPromise,
 	      _options$maxAge = options.maxAge,
-	      maxAge = _options$maxAge === undefined ? _utils.INFINITY : _options$maxAge,
+	      maxAge = _options$maxAge === undefined ? INFINITY : _options$maxAge,
 	      _options$maxArgs = options.maxArgs,
-	      maxArgs = _options$maxArgs === undefined ? _utils.INFINITY : _options$maxArgs,
+	      maxArgs = _options$maxArgs === undefined ? INFINITY : _options$maxArgs,
 	      _options$maxSize = options.maxSize,
-	      maxSize = _options$maxSize === undefined ? _utils.INFINITY : _options$maxSize,
+	      maxSize = _options$maxSize === undefined ? INFINITY : _options$maxSize,
 	      _options$serializer = options.serializer,
 	      serializer = _options$serializer === undefined ? _utils.serializeArguments : _options$serializer;
 	
-	  var isMaxAgeFinite = maxAge !== _utils.INFINITY;
-	  var isMaxArgsFinite = maxArgs !== _utils.INFINITY;
-	  var isMaxSizeFinite = maxSize !== _utils.INFINITY;
+	  var hasMaxAge = (0, _utils.isFiniteAndPositive)(maxAge);
+	  var hasMaxArgs = (0, _utils.isFiniteAndPositive)(maxArgs);
+	  var hasMaxSize = (0, _utils.isFiniteAndPositive)(maxSize);
 	
 	  var key = '';
 	
@@ -1258,23 +1249,18 @@ return /******/ (function(modules) { // webpackBootstrap
 	      args[_key] = arguments[_key];
 	    }
 	
-	    key = (0, _utils.getCacheKey)(args, serializer, isMaxArgsFinite, maxArgs);
+	    key = (0, _utils.getCacheKey)(args, serializer, hasMaxArgs, maxArgs);
 	
-	    if (isMaxSizeFinite) {
+	    if (hasMaxSize) {
 	      (0, _utils.setUsageOrder)(memoizedFunction, key, maxSize);
 	    }
 	
-	    if (memoizedFunction.cache.has(key)) {
-	      return memoizedFunction.cache.get(key);
-	    }
-	
-	    return (0, _utils.setNewCachedValue)(memoizedFunction, key, fn.apply(this, args), isPromise, isMaxAgeFinite, maxAge);
+	    return cache.has(key) ? cache.get(key) : (0, _utils.setNewCachedValue)(memoizedFunction, key, fn.apply(this, args), isPromise, hasMaxAge, maxAge);
 	  };
 	
 	  return (0, _utils.getFunctionWithCacheAdded)(memoizedFunction, cache);
 	};
 	
-	// utils
 	exports.default = moize;
 	module.exports = exports['default'];
 
@@ -1337,7 +1323,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        this.lastItem = undefined;
 	      }
 	
-	      var index = (0, _utils.getIndexOf)(this, key);
+	      var index = (0, _utils.getIndexOfItemInMap)(this, key);
 	
 	      if (index !== -1) {
 	        this.size--;
@@ -1389,7 +1375,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        return this.lastItem.value;
 	      }
 	
-	      var index = (0, _utils.getIndexOf)(this, key);
+	      var index = (0, _utils.getIndexOfItemInMap)(this, key);
 	
 	      if (index !== -1) {
 	        this.lastItem = this.list[index];
@@ -1419,7 +1405,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        return true;
 	      }
 	
-	      var index = (0, _utils.getIndexOf)(this, key);
+	      var index = (0, _utils.getIndexOfItemInMap)(this, key);
 	
 	      if (index !== -1) {
 	        this.lastItem = this.list[index];
@@ -1453,7 +1439,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        return this;
 	      }
 	
-	      var index = (0, _utils.getIndexOf)(this, key);
+	      var index = (0, _utils.getIndexOfItemInMap)(this, key);
 	
 	      if (index !== -1) {
 	        this.lastItem = this.list[index];
@@ -1489,7 +1475,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	exports.setUsageOrder = exports.setNewCachedValue = exports.setExpirationOfCache = exports.serializeArguments = exports.isKeyLastItem = exports.getStringifiedArgument = exports.stringify = exports.getIndexOf = exports.isEqual = exports.getFunctionWithCacheAdded = exports.deleteItemFromCache = exports.getCacheKey = exports.decycle = exports.isValueObjectOrArray = exports.isComplexObject = exports.unshift = exports.splice = exports.INFINITY = undefined;
+	exports.setUsageOrder = exports.setNewCachedValue = exports.setExpirationOfCache = exports.serializeArguments = exports.getStringifiedArgument = exports.stringify = exports.getIndexOfItemInMap = exports.isKeyLastItem = exports.isFiniteAndPositive = exports.isEqual = exports.isFiniteInteger = exports.isNAN = exports.getFunctionWithCacheAdded = exports.deleteItemFromCache = exports.getCacheKey = exports.decycle = exports.isValueObjectOrArray = exports.isComplexObject = exports.isArray = exports.unshift = exports.splice = exports.ARRAY_OBJECT_CLASS = undefined;
 	
 	var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 	
@@ -1503,9 +1489,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	var toString = Object.prototype.toString;
 	var jsonStringify = JSON.stringify;
 	
-	var INFINITY = exports.INFINITY = Number.POSITIVE_INFINITY;
-	
-	var ARRAY_OBJECT_CLASS = '[object Array]';
+	var ARRAY_OBJECT_CLASS = exports.ARRAY_OBJECT_CLASS = '[object Array]';
 	var OBJECT_TYPEOF = 'object';
 	
 	var GOTCHA_OBJECT_CLASSES = [Boolean, Date, Number, RegExp, String];
@@ -1563,6 +1547,21 @@ return /******/ (function(modules) { // webpackBootstrap
 	  array[0] = item;
 	
 	  return array;
+	};
+	
+	/**
+	 * @private
+	 *
+	 * @function isArray
+	 *
+	 * @description
+	 * provide fallback for native Array.isArray test
+	 *
+	 * @param {*} object object to test if it is an array
+	 * @returns {boolean} is the object passed an array or not
+	 */
+	var isArray = exports.isArray = Array.isArray || function (object) {
+	  return toString.call(object) === ARRAY_OBJECT_CLASS;
 	};
 	
 	/**
@@ -1644,7 +1643,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	      map.set(value, path);
 	
-	      if (toString.call(value) === ARRAY_OBJECT_CLASS) {
+	      if (isArray(value)) {
 	        return value.map(function (item, itemIndex) {
 	          return coalesceCircularReferences(item, path + '[' + itemIndex + ']');
 	        });
@@ -1673,12 +1672,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	 *
 	 * @param {Array<*>} args arguments passed to the method
 	 * @param {function} serializer method used to serialize keys into a string
-	 * @param {boolean} isMaxArgsFinite has the maxArgs option been applied
+	 * @param {boolean} hasMaxArgs has the maxArgs option been applied
 	 * @param {number} maxArgs the maximum number of arguments to use in the serialization
 	 * @returns {*}
 	 */
-	var getCacheKey = exports.getCacheKey = function getCacheKey(args, serializer, isMaxArgsFinite, maxArgs) {
-	  return args.length === 1 ? args[0] : serializer(args, isMaxArgsFinite, maxArgs);
+	var getCacheKey = exports.getCacheKey = function getCacheKey(args, serializer, hasMaxArgs, maxArgs) {
+	  return args.length === 1 ? args[0] : serializer(args, hasMaxArgs, maxArgs);
 	};
 	
 	/**
@@ -1772,6 +1771,36 @@ return /******/ (function(modules) { // webpackBootstrap
 	/**
 	 * @private
 	 *
+	 * @function isNAN
+	 *
+	 * @description
+	 * test if the value is NaN
+	 *
+	 * @param {*} value value to test
+	 * @returns {boolean} is value NaN
+	 */
+	var isNAN = exports.isNAN = function isNAN(value) {
+	  return value !== value;
+	};
+	
+	/**
+	 * @private
+	 * 
+	 * @function isFiniteInteger
+	 * 
+	 * @description
+	 * test if the value passed is a finite integer (positive or negative)
+	 *
+	 * @param {*} value value to test
+	 * @returns {boolean} is value finite and an integer
+	 */
+	var isFiniteInteger = exports.isFiniteInteger = function isFiniteInteger(value) {
+	  return value === ~~value;
+	};
+	
+	/**
+	 * @private
+	 *
 	 * @function isEqual
 	 *
 	 * @description
@@ -1782,13 +1811,44 @@ return /******/ (function(modules) { // webpackBootstrap
 	 * @returns {boolean} are the two values equal
 	 */
 	var isEqual = exports.isEqual = function isEqual(value1, value2) {
-	  return value1 === value2 || value1 !== value1 && value2 !== value2;
+	  return value1 === value2 || isNAN(value1) && isNAN(value2);
 	};
 	
 	/**
 	 * @private
 	 *
-	 * @function getIndexOf
+	 * @function isFiniteAndPositive
+	 *
+	 * @description
+	 * is the number passed finite and positive
+	 *
+	 * @param {number} number number to test for finiteness and positivity
+	 * @returns {boolean} is the number finite and positive
+	 */
+	var isFiniteAndPositive = exports.isFiniteAndPositive = function isFiniteAndPositive(number) {
+	  return isFiniteInteger(number) && number > 0;
+	};
+	
+	/**
+	 * @private
+	 *
+	 * @function isKeyLastItem
+	 *
+	 * @description
+	 * is the key passed the same key as the lastItem
+	 *
+	 * @param {{key: *, value: *}} lastItem the current lastItem in the Map
+	 * @param {*} key the key to match on
+	 * @returns {boolean} is the key the same as the LastItem
+	 */
+	var isKeyLastItem = exports.isKeyLastItem = function isKeyLastItem(lastItem, key) {
+	  return !!lastItem && isEqual(lastItem.key, key);
+	};
+	
+	/**
+	 * @private
+	 *
+	 * @function getIndexOfItemInMap
 	 *
 	 * @description
 	 * get the index of the key in the map
@@ -1797,7 +1857,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	 * @param {*} key key to find in map
 	 * @returns {number} index location of key in list
 	 */
-	var getIndexOf = exports.getIndexOf = function getIndexOf(map, key) {
+	var getIndexOfItemInMap = exports.getIndexOfItemInMap = function getIndexOfItemInMap(map, key) {
 	  var index = -1;
 	
 	  while (++index < map.size) {
@@ -1846,34 +1906,18 @@ return /******/ (function(modules) { // webpackBootstrap
 	/**
 	 * @private
 	 *
-	 * @function isKeyLastItem
-	 *
-	 * @description
-	 * is the key passed the same key as the lastItem
-	 *
-	 * @param {{key: *, value: *}} lastItem the current lastItem in the Map
-	 * @param {*} key the key to match on
-	 * @returns {boolean} is the key the same as the LastItem
-	 */
-	var isKeyLastItem = exports.isKeyLastItem = function isKeyLastItem(lastItem, key) {
-	  return !!lastItem && isEqual(lastItem.key, key);
-	};
-	
-	/**
-	 * @private
-	 *
 	 * @function serializeArguments
 	 *
 	 * @description
 	 * serialize the arguments into a string
 	 *
 	 * @param {Array<*>} args arguments to serialize into string
-	 * @param {boolean} isMaxArgsFinite is there a limit to the args to use when caching
+	 * @param {boolean} hasMaxArgs is there a limit to the args to use when caching
 	 * @param {number} maxArgs maximum number of arguments to use for caching the key
 	 * @returns {string} string of serialized arguments
 	 */
-	var serializeArguments = exports.serializeArguments = function serializeArguments(args, isMaxArgsFinite, maxArgs) {
-	  var length = isMaxArgsFinite ? maxArgs : args.length;
+	var serializeArguments = exports.serializeArguments = function serializeArguments(args, hasMaxArgs, maxArgs) {
+	  var length = hasMaxArgs ? maxArgs : args.length;
 	
 	  var index = -1,
 	      key = '|';
@@ -1898,15 +1942,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	 * @param {number} maxAge number in ms to wait before expiring the cache
 	 */
 	var setExpirationOfCache = exports.setExpirationOfCache = function setExpirationOfCache(fn, key, maxAge) {
-	  var cache = fn.cache,
-	      usage = fn.usage;
-	
-	
-	  var expirationTime = Math.max(maxAge, 0);
-	
 	  setTimeout(function () {
-	    deleteItemFromCache(cache, usage, key);
-	  }, expirationTime);
+	    deleteItemFromCache(fn.cache, fn.usage, key);
+	  }, maxAge);
 	};
 	
 	/**
@@ -1921,11 +1959,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	 * @param {*} key key in cache to assign value to
 	 * @param {*} value value to store in cache
 	 * @param {boolean} isPromise is the value a promise or not
-	 * @param {boolean} isMaxAgeFinite does the cache have a maxAge or not
+	 * @param {boolean} hasMaxAge does the cache have a maxAge or not
 	 * @param {number} maxAge how long should the cache persist
 	 * @returns {any} value just stored in cache
 	 */
-	var setNewCachedValue = exports.setNewCachedValue = function setNewCachedValue(fn, key, value, isPromise, isMaxAgeFinite, maxAge) {
+	var setNewCachedValue = exports.setNewCachedValue = function setNewCachedValue(fn, key, value, isPromise, hasMaxAge, maxAge) {
 	  if (isPromise) {
 	    value.then(function (resolvedValue) {
 	      fn.cache.set(key, resolvedValue);
@@ -1934,7 +1972,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    fn.cache.set(key, value);
 	  }
 	
-	  if (isMaxAgeFinite) {
+	  if (hasMaxAge) {
 	    setExpirationOfCache(fn, key, maxAge);
 	  }
 	
@@ -1957,20 +1995,17 @@ return /******/ (function(modules) { // webpackBootstrap
 	 * @param {number} maxSize the maximum size of the cache
 	 */
 	var setUsageOrder = exports.setUsageOrder = function setUsageOrder(fn, key, maxSize) {
-	  var cache = fn.cache,
-	      usage = fn.usage;
-	
-	  var index = usage.indexOf(key);
+	  var index = fn.usage.indexOf(key);
 	
 	  if (index !== 0) {
 	    if (!!~index) {
-	      splice(usage, index);
+	      splice(fn.usage, index);
 	    }
 	
-	    unshift(usage, key);
+	    unshift(fn.usage, key);
 	
-	    if (usage.length > maxSize) {
-	      deleteItemFromCache(cache, usage, usage[usage.length - 1]);
+	    if (fn.usage.length > maxSize) {
+	      deleteItemFromCache(fn.cache, fn.usage, fn.usage[fn.usage.length - 1]);
 	    }
 	  }
 	};
@@ -2297,10 +2332,14 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	'use strict';
 	
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	exports.reduceStateToMatchingKeys = exports.isElementVoidTag = exports.haveValuesChanged = exports.getValidKeys = exports.getScopedValues = exports.getKeysSubsetWithType = exports.getKeyType = exports.isSizeKey = exports.isPositionKey = exports.getElementValues = exports.getNaturalDimensionValue = exports.createIsKeyType = undefined;
+	exports.__esModule = true;
+	exports.reduceStateToMatchingKeys = exports.isElementVoidTag = exports.haveValuesChanged = exports.getValidKeys = exports.getScopedValues = exports.getKeysSubsetWithType = exports.getKeyType = exports.isSizeKey = exports.isPositionKey = exports.getElementValues = exports.getNaturalDimensionValue = exports.createFlattenConvenienceFunction = exports.createIsKeyType = undefined;
+	
+	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; // external dependencies
+	
+	
+	// constants
+	
 	
 	var _filter = __webpack_require__(28);
 	
@@ -2309,6 +2348,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	var _includes = __webpack_require__(29);
 	
 	var _includes2 = _interopRequireDefault(_includes);
+	
+	var _isFunction = __webpack_require__(3);
+	
+	var _isFunction2 = _interopRequireDefault(_isFunction);
 	
 	var _isNull = __webpack_require__(31);
 	
@@ -2350,6 +2393,30 @@ return /******/ (function(modules) { // webpackBootstrap
 	/**
 	 * @private
 	 *
+	 * @function createFlattenConvenienceFunction
+	 *
+	 * @description
+	 * create a convenience function that will flatten the values returned (specific to property if passed)
+	 *
+	 * @param {function} measure main measure function to get the decorator from
+	 * @param {string} [property] specific property to build convenience function for
+	 * @returns {function((Array<string>|Object|string), Object): function} decorator with flatten added as option
+	 */
+	var createFlattenConvenienceFunction = exports.createFlattenConvenienceFunction = function createFlattenConvenienceFunction(measure, property) {
+	  return function (keys) {
+	    var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+	
+	    var decorator = measure(property || keys, _extends({}, options, {
+	      flatten: true
+	    }));
+	
+	    return (0, _isFunction2.default)(keys) ? decorator(keys) : decorator;
+	  };
+	};
+	
+	/**
+	 * @private
+	 *
 	 * @function getNaturalDimensionValue
 	 *
 	 * @description
@@ -2361,10 +2428,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	 * @param {string} key the size / position value to retrieve from source
 	 * @returns {number}
 	 */
-	
-	
-	// constants
-	// external dependencies
 	var getNaturalDimensionValue = exports.getNaturalDimensionValue = function getNaturalDimensionValue(source, key) {
 	  var value = source[key];
 	

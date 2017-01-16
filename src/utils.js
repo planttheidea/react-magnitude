@@ -1,6 +1,7 @@
 // external dependencies
 import filter from 'lodash/filter';
 import includes from 'lodash/includes';
+import isFunction from 'lodash/isFunction';
 import isNull from 'lodash/isNull';
 import isUndefined from 'lodash/isUndefined';
 import reduce from 'lodash/reduce';
@@ -29,6 +30,29 @@ import {
 export const createIsKeyType = (typeArray) => {
   return (key) => {
     return !!~typeArray.indexOf(key);
+  };
+};
+
+/**
+ * @private
+ *
+ * @function createFlattenConvenienceFunction
+ *
+ * @description
+ * create a convenience function that will flatten the values returned (specific to property if passed)
+ *
+ * @param {function} measure main measure function to get the decorator from
+ * @param {string} [property] specific property to build convenience function for
+ * @returns {function((Array<string>|Object|string), Object): function} decorator with flatten added as option
+ */
+export const createFlattenConvenienceFunction = (measure, property) => {
+  return (keys, options = {}) => {
+    const decorator = measure(property || keys, {
+      ...options,
+      flatten: true
+    });
+
+    return isFunction(keys) ? decorator(keys) : decorator;
   };
 };
 

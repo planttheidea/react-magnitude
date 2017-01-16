@@ -8,6 +8,8 @@ import {
 
 import measure from '../src/index';
 
+console.log(measure.width);
+
 @measure
 class NoParams extends PureComponent {
   render() {
@@ -30,18 +32,20 @@ class NoParams extends PureComponent {
   }
 }
 
-@measure('size')
-class SizeOnly extends PureComponent {
+@measure.width
+class WidthOnly extends PureComponent {
   render() {
     const {
       children,
       position,
-      size
+      size,
+      width
     } = this.props;
 
-    console.group('size only');
+    console.group('width only');
     console.log('position', position);
     console.log('size', size);
+    console.log('width', width);
     console.groupEnd();
 
     return (
@@ -204,9 +208,9 @@ class App extends Component {
           I only have the position property.
         </PositionOnly>
 
-        <SizeOnly>
+        <WidthOnly>
           I only have the size property.
-        </SizeOnly>
+        </WidthOnly>
 
         <SpecificProperties>
           I only have the height and width properties in size, and top and left properties in position.

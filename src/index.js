@@ -18,6 +18,7 @@ import getMeasuredComponent from './getMeasuredComponent';
 
 // utils
 import {
+  createFlattenConvenienceFunction,
   getValidKeys
 } from './utils';
 
@@ -75,7 +76,13 @@ const measure = (passedKeys, passedOptions = {}) => {
     return getMeasuredComponent(keys, options);
   }
 
-  throw new TypeError('You did not pass the correct object type for the measure decorator.');
+  return getMeasuredComponent(ALL_KEYS, options);
 };
+
+measure.flat = createFlattenConvenienceFunction(measure);
+
+ALL_KEYS.forEach((key) => {
+  measure[key] = createFlattenConvenienceFunction(measure, key);
+});
 
 export default measure;
