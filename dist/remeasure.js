@@ -718,7 +718,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	  var element = instance.element;
 	
 	  if (element && !isElementVoidTag(element)) {
-	    (0, _elementResizeEvent2.default)(element, debounceValue ? createUpdateValuesViaDebounce(instance, debounceValue) : updateValuesViaRaf.bind(null, instance));
+	    var resizeFn = debounceValue ? createUpdateValuesViaDebounce(instance, debounceValue) : updateValuesViaRaf.bind(null, instance);
+	
+	    (0, _elementResizeEvent2.default)(element, resizeFn);
 	
 	    instance.hasResize = true;
 	  }
@@ -852,12 +854,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	  return function (component) {
 	    var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
 	
-	    var decoratorOptions = (0, _isFunction2.default)(component) ? options : component;
+	    var isComponentFunction = (0, _isFunction2.default)(component);
+	    var decoratorOptions = isComponentFunction ? options : component;
 	    var decorator = measure(property, _extends({}, decoratorOptions, {
 	      flatten: true
 	    }));
 	
-	    return (0, _isFunction2.default)(component) ? decorator(component) : decorator;
+	    return isComponentFunction ? decorator(component) : decorator;
 	  };
 	};
 	

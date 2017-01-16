@@ -101,9 +101,11 @@ export const setElementResize = (instance, debounceValue) => {
   const element = instance.element;
 
   if (element && !isElementVoidTag(element)) {
-    onElementResize(element, debounceValue ?
+    const resizeFn = debounceValue ?
       createUpdateValuesViaDebounce(instance, debounceValue) :
-      updateValuesViaRaf.bind(null, instance));
+      updateValuesViaRaf.bind(null, instance);
+
+    onElementResize(element, resizeFn);
 
     instance.hasResize = true;
   }
@@ -231,13 +233,14 @@ export const createIsKeyType = (typeArray) => {
  */
 export const createFlattenConvenienceFunction = (measure, property) => {
   return (component, options = {}) => {
-    const decoratorOptions = isFunction(component) ? options : component;
+    const isComponentFunction = isFunction(component);
+    const decoratorOptions = isComponentFunction ? options : component;
     const decorator = measure(property, {
       ...decoratorOptions,
       flatten: true
     });
 
-    return isFunction(component) ? decorator(component) : decorator;
+    return isComponentFunction ? decorator(component) : decorator;
   };
 };
 
@@ -351,9 +354,7 @@ export const getElementValues = (element, keys) => {
   const boundingClientRect = element.getBoundingClientRect();
 
   return reduce(keys, (values, {key, source}) => {
-    values[key] = source === CLIENT_RECT_TYPE ?
-      boundingClientRect[key] :
-      getNaturalDimensionValue(element, key);
+    values[key] = source === CLIENT_RECT_TYPE ? boundingClientRect[key] : getNaturalDimensionValue(element, key);
 
     return values;
   }, {});
