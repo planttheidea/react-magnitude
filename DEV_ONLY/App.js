@@ -8,8 +8,6 @@ import {
 
 import measure from '../src/index';
 
-console.log(measure.width);
-
 @measure
 class NoParams extends PureComponent {
   render() {
@@ -32,7 +30,7 @@ class NoParams extends PureComponent {
   }
 }
 
-@measure.width
+@measure.width({renderOnResize: false})
 class WidthOnly extends PureComponent {
   render() {
     const {
@@ -209,7 +207,7 @@ class App extends Component {
         </PositionOnly>
 
         <WidthOnly>
-          I only have the size property.
+          I only have the width property, and will not rerender on resize.
         </WidthOnly>
 
         <SpecificProperties>

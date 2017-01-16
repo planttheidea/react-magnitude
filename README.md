@@ -233,24 +233,7 @@ class MyMeasuredComponent extends Component {
 }
 ```
 
-These accept options just like the standard measure as well, they are just merged with the `flatten: true` value.
-
-There is also a generic convenience function for flattening if you want multiple properties, which is just `measure.flat`:
-
-```javascript
-@measure.flat(['height', 'width'])
-class MyMeasuredComponent extends Component {
-  render() {
-    return (
-      <div>
-        I have access to height and width directly on this.props.
-      </div>
-    );
-  }
-}
-```
-
-This also accepts options just like the specific convenience functions.
+These accept options as a parameter just like the standard `measure`, they are just merged with the `flatten: true` value.
 
 ### Caveats
 

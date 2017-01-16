@@ -6,11 +6,7 @@ import isString from 'lodash/isString';
 
 // constants
 import {
-  ALL_KEYS,
-  ALL_POSITION_KEYS,
-  ALL_SIZE_KEYS,
-  POSITION_PROP_DEFAULT,
-  SIZE_PROP_DEFAULT
+  ALL_KEYS
 } from './constants';
 
 // component
@@ -19,6 +15,7 @@ import getMeasuredComponent from './getMeasuredComponent';
 // utils
 import {
   createFlattenConvenienceFunction,
+  getKeysFromStringKey,
   getValidKeys
 } from './utils';
 
@@ -33,8 +30,8 @@ import {
  * create higher-order component that injects size and position properties
  * into OriginalComponent as an object under the prop name size and position
  *
- * @param {Component|Array<string>|Object} passedKeys if used without parameters, the component that will be
- * measured, else either an array of keys to watch for measurement or an object of options
+ * @param {Component|Array<string>|Object|string} passedKeys if used without parameters, the component that will be
+ * measured, else either single key or array of keys to watch for measurement, or an object of options
  * @param {Object} [passedOptions={}] an object of options to apply for measuring
  * @returns {MeasuredComponent} the higher-order component that will measure the child and pass down size and
  * position values as props
@@ -51,35 +48,18 @@ const measure = (passedKeys, passedOptions = {}) => {
     return getMeasuredComponent(ALL_KEYS, passedKeys);
   }
 
+  let keys;
+
   if (isArray(passedKeys)) {
-    const keys = getValidKeys(passedKeys, ALL_KEYS);
-
-    return getMeasuredComponent(keys, options);
+    keys = getValidKeys(passedKeys, ALL_KEYS);
+  } else if (isString(passedKeys)) {
+    keys = getKeysFromStringKey(passedKeys, options);
+  } else {
+    keys = ALL_KEYS;
   }
 
-  if (isString(passedKeys)) {
-    const {
-      positionProp = POSITION_PROP_DEFAULT,
-      sizeProp = SIZE_PROP_DEFAULT
-    } = options;
-
-    let keys;
-
-    if (passedKeys === positionProp) {
-      keys = ALL_POSITION_KEYS;
-    } else if (passedKeys === sizeProp) {
-      keys = ALL_SIZE_KEYS;
-    } else {
-      keys = [passedKeys];
-    }
-
-    return getMeasuredComponent(keys, options);
-  }
-
-  return getMeasuredComponent(ALL_KEYS, options);
+  return getMeasuredComponent(keys, options);
 };
-
-measure.flat = createFlattenConvenienceFunction(measure);
 
 ALL_KEYS.forEach((key) => {
   measure[key] = createFlattenConvenienceFunction(measure, key);

@@ -7,7 +7,7 @@
 		exports["Remeasure"] = factory(require("react"), require("react-dom"));
 	else
 		root["Remeasure"] = factory(root["React"], root["ReactDOM"]);
-})(this, function(__WEBPACK_EXTERNAL_MODULE_25__, __WEBPACK_EXTERNAL_MODULE_26__) {
+})(this, function(__WEBPACK_EXTERNAL_MODULE_13__, __WEBPACK_EXTERNAL_MODULE_34__) {
 return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -99,7 +99,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	var _getMeasuredComponent2 = _interopRequireDefault(_getMeasuredComponent);
 	
-	var _utils = __webpack_require__(27);
+	var _utils = __webpack_require__(14);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -114,8 +114,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	 * create higher-order component that injects size and position properties
 	 * into OriginalComponent as an object under the prop name size and position
 	 *
-	 * @param {Component|Array<string>|Object} passedKeys if used without parameters, the component that will be
-	 * measured, else either an array of keys to watch for measurement or an object of options
+	 * @param {Component|Array<string>|Object|string} passedKeys if used without parameters, the component that will be
+	 * measured, else either single key or array of keys to watch for measurement, or an object of options
 	 * @param {Object} [passedOptions={}] an object of options to apply for measuring
 	 * @returns {MeasuredComponent} the higher-order component that will measure the child and pass down size and
 	 * position values as props
@@ -134,36 +134,18 @@ return /******/ (function(modules) { // webpackBootstrap
 	    return (0, _getMeasuredComponent2.default)(_constants.ALL_KEYS, passedKeys);
 	  }
 	
+	  var keys = void 0;
+	
 	  if ((0, _isArray2.default)(passedKeys)) {
-	    var keys = (0, _utils.getValidKeys)(passedKeys, _constants.ALL_KEYS);
-	
-	    return (0, _getMeasuredComponent2.default)(keys, options);
+	    keys = (0, _utils.getValidKeys)(passedKeys, _constants.ALL_KEYS);
+	  } else if ((0, _isString2.default)(passedKeys)) {
+	    keys = (0, _utils.getKeysFromStringKey)(passedKeys, options);
+	  } else {
+	    keys = _constants.ALL_KEYS;
 	  }
 	
-	  if ((0, _isString2.default)(passedKeys)) {
-	    var _options$positionProp = options.positionProp,
-	        positionProp = _options$positionProp === undefined ? _constants.POSITION_PROP_DEFAULT : _options$positionProp,
-	        _options$sizeProp = options.sizeProp,
-	        sizeProp = _options$sizeProp === undefined ? _constants.SIZE_PROP_DEFAULT : _options$sizeProp;
-	
-	
-	    var _keys = void 0;
-	
-	    if (passedKeys === positionProp) {
-	      _keys = _constants.ALL_POSITION_KEYS;
-	    } else if (passedKeys === sizeProp) {
-	      _keys = _constants.ALL_SIZE_KEYS;
-	    } else {
-	      _keys = [passedKeys];
-	    }
-	
-	    return (0, _getMeasuredComponent2.default)(_keys, options);
-	  }
-	
-	  return (0, _getMeasuredComponent2.default)(_constants.ALL_KEYS, options);
+	  return (0, _getMeasuredComponent2.default)(keys, options);
 	};
-	
-	measure.flat = (0, _utils.createFlattenConvenienceFunction)(measure);
 	
 	_constants.ALL_KEYS.forEach(function (key) {
 	  measure[key] = (0, _utils.createFlattenConvenienceFunction)(measure, key);
@@ -532,31 +514,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 	
-	var _elementResizeEvent = __webpack_require__(13);
-	
-	var _elementResizeEvent2 = _interopRequireDefault(_elementResizeEvent);
-	
-	var _debounce = __webpack_require__(14);
-	
-	var _debounce2 = _interopRequireDefault(_debounce);
-	
-	var _moize = __webpack_require__(19);
-	
-	var _moize2 = _interopRequireDefault(_moize);
-	
-	var _raf = __webpack_require__(22);
-	
-	var _raf2 = _interopRequireDefault(_raf);
-	
-	var _react = __webpack_require__(25);
+	var _react = __webpack_require__(13);
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _reactDom = __webpack_require__(26);
-	
-	var _constants = __webpack_require__(11);
-	
-	var _utils = __webpack_require__(27);
+	var _utils = __webpack_require__(14);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -567,33 +529,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; } // external dependencies
 	
 	
-	// constants
-	
-	
 	// utils
 	
 	
 	var getMeasuredComponent = function getMeasuredComponent(keys, options) {
-	  var _options$debounce = options.debounce,
-	      debounceValue = _options$debounce === undefined ? _constants.DEBOUNCE_VALUE_DEFAULT : _options$debounce,
-	      _options$flatten = options.flatten,
-	      flatten = _options$flatten === undefined ? _constants.FLATTEN_DEFAULT : _options$flatten,
-	      _options$positionProp = options.positionProp,
-	      positionProp = _options$positionProp === undefined ? _constants.POSITION_PROP_DEFAULT : _options$positionProp,
-	      _options$renderOnResi = options.renderOnResize,
-	      renderOnResize = _options$renderOnResi === undefined ? _constants.RENDER_ON_RESIZE_DEFAULT : _options$renderOnResi,
-	      _options$sizeProp = options.sizeProp,
-	      sizeProp = _options$sizeProp === undefined ? _constants.SIZE_PROP_DEFAULT : _options$sizeProp;
-	
-	
-	  var propKeyNames = {
-	    positionProp: positionProp,
-	    sizeProp: sizeProp
-	  };
-	
-	  var selectedKeys = [].concat((0, _utils.getKeysSubsetWithType)(_constants.ALL_BOUNDING_CLIENT_RECT_KEYS, keys, _constants.CLIENT_RECT_TYPE, propKeyNames)).concat((0, _utils.getKeysSubsetWithType)(_constants.ALL_DOM_ELEMENT_KEYS, keys, _constants.ELEMENT_TYPE, propKeyNames));
-	
-	  var initialState = (0, _utils.reduceStateToMatchingKeys)(selectedKeys);
+	  var selectedKeys = (0, _utils.getKeysWithSourceAndType)(keys, options);
 	
 	  return function (PassedComponent) {
 	    var MeasuredComponent = function (_Component) {
@@ -608,158 +548,20 @@ return /******/ (function(modules) { // webpackBootstrap
 	          args[_key] = arguments[_key];
 	        }
 	
-	        return _ret = (_temp = (_this = _possibleConstructorReturn(this, _Component.call.apply(_Component, [this].concat(args))), _this), _this.state = _extends({}, initialState), _this.element = null, _this.getScopedValues = (0, _moize2.default)(_utils.getScopedValues, {
-	          maxSize: 25
-	        }), _this.hasResize = false, _this.clearValues = function () {
-	          var emptyValues = (0, _utils.reduceStateToMatchingKeys)(selectedKeys);
-	
-	          if ((0, _utils.haveValuesChanged)(selectedKeys, emptyValues, _this.state)) {
-	            _this.setState(emptyValues);
-	          }
-	        }, _this.getDOMElement = function () {
-	          return (0, _reactDom.findDOMNode)(_this);
-	        }, _this.setElement = function (element) {
-	          _this.element = element;
-	
-	          if (element) {
-	            if (!_this.hasResize) {
-	              _this.setElementResize();
-	            }
-	          } else {
-	            _this.hasResize = false;
-	          }
-	        }, _this.setElementResize = function () {
-	          if (_this.element && !(0, _utils.isElementVoidTag)(_this.element)) {
-	            (0, _elementResizeEvent2.default)(_this.element, debounceValue ? _this.updateValuesViaDebounce : _this.updateValuesViaRaf);
-	
-	            _this.hasResize = true;
-	          }
-	        }, _this.updateValuesIfChanged = function () {
-	          var element = _this.element;
-	
-	          if (element) {
-	            var values = (0, _utils.getElementValues)(_this.element, selectedKeys);
-	
-	            if ((0, _utils.haveValuesChanged)(selectedKeys, values, _this.state)) {
-	              _this.setState(values);
-	            }
-	          }
-	        }, _this.updateValuesViaDebounce = (0, _debounce2.default)(function () {
-	          if (_this.element) {
-	            _this.updateValuesIfChanged();
-	          }
-	        }, debounceValue), _this.updateValuesViaRaf = function () {
-	          if (_this.element) {
-	            (0, _raf2.default)(_this.updateValuesIfChanged);
-	          }
-	        }, _temp), _possibleConstructorReturn(_this, _ret);
+	        return _ret = (_temp = (_this = _possibleConstructorReturn(this, _Component.call.apply(_Component, [this].concat(args))), _this), _this.state = _extends({}, (0, _utils.reduceStateToMatchingKeys)(selectedKeys)), _this.componentDidMount = (0, _utils.createComponentDidMount)(_this, options), _this.componentDidUpdate = (0, _utils.createComponentDidUpdate)(_this, selectedKeys, options), _this.element = null, _this.hasResize = false, _this.getDOMElement = (0, _utils.createGetDOMElement)(_this), _this.getScopedValues = (0, _utils.createGetScopedValues)(), _this.updateValuesIfChanged = (0, _utils.createUpdateValuesIfChanged)(_this, selectedKeys), _temp), _possibleConstructorReturn(_this, _ret);
 	      }
 	
-	      MeasuredComponent.prototype.componentDidMount = function componentDidMount() {
-	        var element = this.getDOMElement();
-	
-	        if (element) {
-	          this.setElement(element);
-	          this.updateValuesViaRaf();
-	        }
-	
-	        if (renderOnResize) {
-	          this.setElementResize();
-	        }
-	      };
-	
-	      MeasuredComponent.prototype.componentDidUpdate = function componentDidUpdate() {
-	        var element = this.getDOMElement();
-	
-	        this.setElement(element);
-	
-	        if (element) {
-	          this.updateValuesViaRaf();
-	        } else {
-	          this.clearValues();
-	        }
-	
-	        if (renderOnResize && !this.hasResize) {
-	          this.setElementResize();
-	        }
-	      };
-	
-	      /**
-	       * @private
-	       *
-	       * @function clearValues
-	       *
-	       * @description
-	       * reset all values to 0 if there is no element present
-	       */
+	      // lifecycle methods
 	
 	
-	      /**
-	       * @private
-	       *
-	       * @function getDOMElement
-	       *
-	       * @description
-	       * get the DOM element specific to the component
-	       *
-	       * @returns {HTMLElement|null}
-	       */
+	      // instance variables
 	
 	
-	      /**
-	       * @private
-	       *
-	       * @function setElement
-	       *
-	       * @description
-	       * assign the element to the instance
-	       *
-	       * @param {HTMLElement|null} element
-	       */
-	
-	
-	      /**
-	       * @private
-	       *
-	       * @function setElementResize
-	       *
-	       * @description
-	       * assign the onResize listener to the element
-	       */
-	
-	
-	      /**
-	       * @private
-	       *
-	       * @function updateValuesIfChanged
-	       *
-	       * @description
-	       * get the new values and assign them to state if they have changed
-	       */
-	
-	
-	      /**
-	       * @private
-	       *
-	       * @function updateValuesViaDebounce
-	       *
-	       * @description
-	       * update the values via debounce value
-	       */
-	
-	
-	      /**
-	       * @private
-	       *
-	       * @function updateValuesViaRaf
-	       *
-	       * @description
-	       * update the values via requestAnimationFrame
-	       */
+	      // instance methods
 	
 	
 	      MeasuredComponent.prototype.render = function render() {
-	        var values = this.getScopedValues(selectedKeys, this.state, flatten);
+	        var values = this.getScopedValues(selectedKeys, this.state, options);
 	
 	        return _react2.default.createElement(PassedComponent, _extends({}, this.props, values));
 	      };
@@ -776,6 +578,648 @@ return /******/ (function(modules) { // webpackBootstrap
 
 /***/ },
 /* 13 */
+/***/ function(module, exports) {
+
+	module.exports = __WEBPACK_EXTERNAL_MODULE_13__;
+
+/***/ },
+/* 14 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	exports.__esModule = true;
+	exports.reduceStateToMatchingKeys = exports.isElementVoidTag = exports.haveValuesChanged = exports.getValidKeys = exports.getKeysWithSourceAndType = exports.getKeysSubsetWithType = exports.getKeysFromStringKey = exports.getKeyType = exports.isSizeKey = exports.isPositionKey = exports.getPropKeyNames = exports.getElementValues = exports.getNaturalDimensionValue = exports.createUpdateValuesIfChanged = exports.createGetScopedValues = exports.createGetDOMElement = exports.createFlattenConvenienceFunction = exports.createIsKeyType = exports.createComponentDidUpdate = exports.createComponentDidMount = exports.setElement = exports.setElementResize = exports.updateValuesViaRaf = exports.createUpdateValuesViaDebounce = exports.clearValues = undefined;
+	
+	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; // external dependencies
+	
+	
+	// constants
+	
+	
+	var _elementResizeEvent = __webpack_require__(15);
+	
+	var _elementResizeEvent2 = _interopRequireDefault(_elementResizeEvent);
+	
+	var _debounce = __webpack_require__(16);
+	
+	var _debounce2 = _interopRequireDefault(_debounce);
+	
+	var _filter = __webpack_require__(21);
+	
+	var _filter2 = _interopRequireDefault(_filter);
+	
+	var _includes = __webpack_require__(22);
+	
+	var _includes2 = _interopRequireDefault(_includes);
+	
+	var _isFunction = __webpack_require__(3);
+	
+	var _isFunction2 = _interopRequireDefault(_isFunction);
+	
+	var _isNull = __webpack_require__(24);
+	
+	var _isNull2 = _interopRequireDefault(_isNull);
+	
+	var _isUndefined = __webpack_require__(25);
+	
+	var _isUndefined2 = _interopRequireDefault(_isUndefined);
+	
+	var _reduce = __webpack_require__(26);
+	
+	var _reduce2 = _interopRequireDefault(_reduce);
+	
+	var _some = __webpack_require__(27);
+	
+	var _some2 = _interopRequireDefault(_some);
+	
+	var _moize = __webpack_require__(28);
+	
+	var _moize2 = _interopRequireDefault(_moize);
+	
+	var _raf = __webpack_require__(31);
+	
+	var _raf2 = _interopRequireDefault(_raf);
+	
+	var _reactDom = __webpack_require__(34);
+	
+	var _constants = __webpack_require__(11);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	/**
+	 * @private
+	 *
+	 * @function clearValues
+	 *
+	 * @description
+	 * create function to reset all values to 0 if there is no element present
+	 *
+	 * @param {MeasuredComponent} instance component instance to clear values of
+	 * @param {function} instance.setState setState method of instance component
+	 * @param {Array<string>} selectedKeys keys to store in state
+	 */
+	var clearValues = exports.clearValues = function clearValues(instance, selectedKeys) {
+	  var emptyValues = reduceStateToMatchingKeys(selectedKeys);
+	
+	  if (haveValuesChanged(selectedKeys, emptyValues, instance.state)) {
+	    instance.setState(emptyValues);
+	  }
+	};
+	
+	/**
+	 * @private
+	 *
+	 * @function createUpdateValuesViaDebounce
+	 *
+	 * @description
+	 * create the function to update the values via debounce value
+	 *
+	 * @param {MeasuredComponent} instance component instance to find DOM node of
+	 * @param {number} debounceValue debounce value for the instance provided
+	 * @returns {function(): void} function to update the values after debounce timing has passed
+	 */
+	var createUpdateValuesViaDebounce = exports.createUpdateValuesViaDebounce = function createUpdateValuesViaDebounce(instance, debounceValue) {
+	  return (0, _debounce2.default)(function () {
+	    if (instance.element) {
+	      instance.updateValuesIfChanged();
+	    }
+	  }, debounceValue);
+	};
+	
+	/**
+	 * @private
+	 *
+	 * @function createUpdateValuesViaRaf
+	 *
+	 * @description
+	 * create the function to update the values via requestAnimationFrame
+	 *
+	 * @param {MeasuredComponent} instance component instance to find DOM node of
+	 */
+	var updateValuesViaRaf = exports.updateValuesViaRaf = function updateValuesViaRaf(instance) {
+	  if (instance.element) {
+	    (0, _raf2.default)(instance.updateValuesIfChanged);
+	  }
+	};
+	
+	/**
+	 * @private
+	 *
+	 * @function setElementResize
+	 *
+	 * @description
+	 * create the function to assign the onResize listener to the element
+	 *
+	 * @param {MeasuredComponent} instance component instance to find DOM node of
+	 * @param {number} debounceValue debounce value for the instance provided
+	 */
+	var setElementResize = exports.setElementResize = function setElementResize(instance, debounceValue) {
+	  var element = instance.element;
+	
+	  if (element && !isElementVoidTag(element)) {
+	    (0, _elementResizeEvent2.default)(element, debounceValue ? createUpdateValuesViaDebounce(instance, debounceValue) : updateValuesViaRaf.bind(null, instance));
+	
+	    instance.hasResize = true;
+	  }
+	};
+	
+	/**
+	 * @private
+	 *
+	 * @function setElement
+	 *
+	 * @description
+	 * assign the element to the instance
+	 *
+	 * @param {MeasuredComponent} instance component instance to find DOM node of
+	 * @param {HTMLElement|null} element element to assign to instance
+	 * @param {number} debounceValue debounce value for the instance provided
+	 * @param {boolean} renderOnResize should the component rerender on resize
+	 */
+	var setElement = exports.setElement = function setElement(instance, element, debounceValue, renderOnResize) {
+	  instance.element = element;
+	
+	  if (element) {
+	    if (renderOnResize && !instance.hasResize) {
+	      setElementResize(instance, debounceValue);
+	    }
+	  } else {
+	    instance.hasResize = false;
+	  }
+	};
+	
+	/**
+	 * @private
+	 *
+	 * @function createComponentDidMount
+	 *
+	 * @description
+	 * create the componentDidMount method for the given instance
+	 *
+	 * @param {MeasuredComponent} instance component instance
+	 * @param {number} [debounceValue=DEBOUNCE_VALUE_DEFAULT] value to use for debounce of updates
+	 * @param {boolean} [renderOnResize=RENDER_ON_RESIZE_DEFAULT] should the component rerender on resize
+	 * @returns {function(): void} componentDidMount method
+	 */
+	var createComponentDidMount = exports.createComponentDidMount = function createComponentDidMount(instance, _ref) {
+	  var _ref$debounce = _ref.debounce,
+	      debounceValue = _ref$debounce === undefined ? _constants.DEBOUNCE_VALUE_DEFAULT : _ref$debounce,
+	      _ref$renderOnResize = _ref.renderOnResize,
+	      renderOnResize = _ref$renderOnResize === undefined ? _constants.RENDER_ON_RESIZE_DEFAULT : _ref$renderOnResize;
+	
+	  return function () {
+	    var element = instance.getDOMElement();
+	
+	    if (element) {
+	      setElement(instance, element, debounceValue, renderOnResize);
+	      updateValuesViaRaf(instance);
+	    }
+	
+	    if (renderOnResize) {
+	      setElementResize(instance, debounceValue);
+	    }
+	  };
+	};
+	
+	/**
+	 * @private
+	 *
+	 * @function createComponentDidUpdate
+	 *
+	 * @description
+	 * create the componentDidUpdate method for the given instance
+	 *
+	 * @param {MeasuredComponent} instance component instance
+	 * @param {Array<string>} selectedKeys keys to store in state
+	 * @param {number} [debounceValue=DEBOUNCE_VALUE_DEFAULT] value to use for debounce of updates
+	 * @param {boolean} [renderOnResize=RENDER_ON_RESIZE_DEFAULT] should the component rerender on resize
+	 * @returns {function(): void} componentDidUpdate method
+	 */
+	var createComponentDidUpdate = exports.createComponentDidUpdate = function createComponentDidUpdate(instance, selectedKeys, _ref2) {
+	  var _ref2$debounce = _ref2.debounce,
+	      debounceValue = _ref2$debounce === undefined ? _constants.DEBOUNCE_VALUE_DEFAULT : _ref2$debounce,
+	      _ref2$renderOnResize = _ref2.renderOnResize,
+	      renderOnResize = _ref2$renderOnResize === undefined ? _constants.RENDER_ON_RESIZE_DEFAULT : _ref2$renderOnResize;
+	
+	  return function () {
+	    var element = instance.getDOMElement();
+	
+	    setElement(instance, element, debounceValue, renderOnResize);
+	
+	    if (element) {
+	      updateValuesViaRaf(instance);
+	    } else {
+	      clearValues(instance, selectedKeys);
+	    }
+	
+	    if (renderOnResize && !instance.hasResize) {
+	      setElementResize(instance, debounceValue);
+	    }
+	  };
+	};
+	
+	/**
+	 * @private
+	 *
+	 * @function createIsKeyType
+	 *
+	 * @description
+	 * create a key type checker function
+	 *
+	 * @param {Array<string>} typeArray
+	 * @returns {function(string): boolean}
+	 */
+	var createIsKeyType = exports.createIsKeyType = function createIsKeyType(typeArray) {
+	  return function (key) {
+	    return !!~typeArray.indexOf(key);
+	  };
+	};
+	
+	/**
+	 * @private
+	 *
+	 * @function createFlattenConvenienceFunction
+	 *
+	 * @description
+	 * create a convenience function that will flatten the values returned (specific to property if passed)
+	 *
+	 * @param {function} measure main measure function to get the decorator from
+	 * @param {string} property specific property to build convenience function for
+	 * @returns {function((function|Object), Object): function} decorator with flatten added as option
+	 */
+	var createFlattenConvenienceFunction = exports.createFlattenConvenienceFunction = function createFlattenConvenienceFunction(measure, property) {
+	  return function (component) {
+	    var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+	
+	    var decoratorOptions = (0, _isFunction2.default)(component) ? options : component;
+	    var decorator = measure(property, _extends({}, decoratorOptions, {
+	      flatten: true
+	    }));
+	
+	    return (0, _isFunction2.default)(component) ? decorator(component) : decorator;
+	  };
+	};
+	
+	/**
+	 * @private
+	 *
+	 * @function createGetDOMElement
+	 *
+	 * @description
+	 * create function to get the DOM element specific to the component
+	 *
+	 * @param {MeasuredComponent} instance component instance to find DOM node of
+	 * @returns {function(): (HTMLElement|null)}
+	 */
+	var createGetDOMElement = exports.createGetDOMElement = function createGetDOMElement(instance) {
+	  return function () {
+	    return (0, _reactDom.findDOMNode)(instance);
+	  };
+	};
+	
+	/**
+	 * @private
+	 *
+	 * @function createGetScopedValues
+	 *
+	 * @description
+	 * create a function to, based on the keys passed, create an object with either position
+	 * or size or both properties that are objects containing the respective
+	 * values for the associated keys
+	 *
+	 * @returns {function(Array<string>, Object, boolean): Object} the values to pass down as props
+	 */
+	var createGetScopedValues = exports.createGetScopedValues = function createGetScopedValues() {
+	  return (0, _moize2.default)(function (keys, values, _ref3) {
+	    var flatten = _ref3.flatten;
+	
+	    if (flatten) {
+	      return values;
+	    }
+	
+	    return (0, _reduce2.default)(keys, function (scopedValues, _ref4) {
+	      var key = _ref4.key,
+	          type = _ref4.type;
+	
+	      if (!scopedValues[type]) {
+	        scopedValues[type] = {};
+	      }
+	
+	      scopedValues[type][key] = values[key];
+	
+	      return scopedValues;
+	    }, {});
+	  });
+	};
+	
+	/**
+	 * @private
+	 *
+	 * @function createUpdateValuesIfChanged
+	 *
+	 * @description
+	 * create the function to get the new values and assign them to state if they have changed
+	 *
+	 * @param {MeasuredComponent} instance component instance to find DOM node of
+	 * @param {function} instance.setState setState method of instance component
+	 * @param {Array<string>} selectedKeys keys to store in state
+	 * @returns {function(): void} function to update the instance state values if they have changed
+	 */
+	var createUpdateValuesIfChanged = exports.createUpdateValuesIfChanged = function createUpdateValuesIfChanged(instance, selectedKeys) {
+	  return function () {
+	    var element = instance.element;
+	
+	    if (element) {
+	      var values = getElementValues(element, selectedKeys);
+	
+	      if (haveValuesChanged(selectedKeys, values, instance.state)) {
+	        instance.setState(values);
+	      }
+	    }
+	  };
+	};
+	
+	/**
+	 * @private
+	 *
+	 * @function getNaturalDimensionValue
+	 *
+	 * @description
+	 * For naturalHeight and naturalWidth, coalesce the values
+	 * with scrollHeight and scrollWIdth if the element does not
+	 * natively support it
+	 *
+	 * @param {HTMLElement} source the element to get the size / position value from
+	 * @param {string} key the size / position value to retrieve from source
+	 * @returns {number}
+	 */
+	var getNaturalDimensionValue = exports.getNaturalDimensionValue = function getNaturalDimensionValue(source, key) {
+	  var value = source[key];
+	
+	  return (0, _isUndefined2.default)(value) ? source[key.replace(_constants.NATURAL_REGEXP, 'scroll')] : value;
+	};
+	
+	/**
+	 * @private
+	 *
+	 * @function getElementValues
+	 *
+	 * @description
+	 * get the values of the element or its bounding client rect
+	 *
+	 * @param {HTMLElement} element
+	 * @param {Array<Object>} keys
+	 * @returns {Object}
+	 */
+	var getElementValues = exports.getElementValues = function getElementValues(element, keys) {
+	  var boundingClientRect = element.getBoundingClientRect();
+	
+	  return (0, _reduce2.default)(keys, function (values, _ref5) {
+	    var key = _ref5.key,
+	        source = _ref5.source;
+	
+	    values[key] = source === _constants.CLIENT_RECT_TYPE ? boundingClientRect[key] : getNaturalDimensionValue(element, key);
+	
+	    return values;
+	  }, {});
+	};
+	
+	/**
+	 * @private
+	 *
+	 * @function getPropKeyNames
+	 *
+	 * @description
+	 * get the positionProp and sizeProp properties from options with defaults applied
+	 *
+	 * @param {string} [positionProp=POSITION_PROP_DEFAULT] position property name
+	 * @param {string} [sizeProp=SIZE_PROP_DEFAULT] size property name
+	 * @returns {{positionProp, sizeProp}} object of positionProp and sizeProp
+	 */
+	var getPropKeyNames = exports.getPropKeyNames = function getPropKeyNames(_ref6) {
+	  var _ref6$positionProp = _ref6.positionProp,
+	      positionProp = _ref6$positionProp === undefined ? _constants.POSITION_PROP_DEFAULT : _ref6$positionProp,
+	      _ref6$sizeProp = _ref6.sizeProp,
+	      sizeProp = _ref6$sizeProp === undefined ? _constants.SIZE_PROP_DEFAULT : _ref6$sizeProp;
+	
+	  return {
+	    positionProp: positionProp,
+	    sizeProp: sizeProp
+	  };
+	};
+	
+	/**
+	 * @private
+	 *
+	 * @function isPositionKey
+	 *
+	 * @description
+	 * is the key passed a position key
+	 *
+	 * @param {string} key
+	 * @returns {boolean}
+	 */
+	var isPositionKey = exports.isPositionKey = createIsKeyType(_constants.ALL_POSITION_KEYS);
+	
+	/**
+	 * @private
+	 *
+	 * @function isSizeKey
+	 *
+	 * @description
+	 * is the key passed a size key
+	 *
+	 * @param {string} key
+	 * @returns {boolean}
+	 */
+	var isSizeKey = exports.isSizeKey = createIsKeyType(_constants.ALL_SIZE_KEYS);
+	
+	/**
+	 * @private
+	 *
+	 * @function getKeyType
+	 *
+	 * @description
+	 * get the type (position or size) of the key passed
+	 *
+	 * @param {string} key
+	 * @param {string} positionProp
+	 * @param {string} sizeProp
+	 * @returns {string}
+	 */
+	var getKeyType = exports.getKeyType = function getKeyType(key, _ref7) {
+	  var positionProp = _ref7.positionProp,
+	      sizeProp = _ref7.sizeProp;
+	
+	  if (isPositionKey(key)) {
+	    return positionProp;
+	  }
+	
+	  if (isSizeKey(key)) {
+	    return sizeProp;
+	  }
+	
+	  return null;
+	};
+	
+	/**
+	 * @private
+	 *
+	 * @function getKeysFromStringKey
+	 *
+	 * @description
+	 * get the keys to store in state based on the key and options passed
+	 *
+	 * @param {string} key string key passed to decorator
+	 * @param {string} [positionProp=POSITION_PROP_DEFAULT] name of position property requested in options
+	 * @param {string} [sizeProp=SIZE_PROP_DEFAULT] name of position property requested in options
+	 * @returns {Array<string>} keys to store in state
+	 */
+	var getKeysFromStringKey = exports.getKeysFromStringKey = function getKeysFromStringKey(key, _ref8) {
+	  var _ref8$positionProp = _ref8.positionProp,
+	      positionProp = _ref8$positionProp === undefined ? _constants.POSITION_PROP_DEFAULT : _ref8$positionProp,
+	      _ref8$sizeProp = _ref8.sizeProp,
+	      sizeProp = _ref8$sizeProp === undefined ? _constants.SIZE_PROP_DEFAULT : _ref8$sizeProp;
+	
+	  if (key === positionProp) {
+	    return _constants.ALL_POSITION_KEYS;
+	  }
+	
+	  if (key === sizeProp) {
+	    return _constants.ALL_SIZE_KEYS;
+	  }
+	
+	  return [key];
+	};
+	
+	/**
+	 * @private
+	 *
+	 * @function getKeysSubsetWithType
+	 *
+	 * @description
+	 * get subset of array1 based on items existing in array2
+	 *
+	 * @param {Array<*>} sourceArray the array to filter
+	 * @param {Array<*>} valuesToExtract the array to find matches in
+	 * @param {string} source the source of the value the key relates to
+	 * @param {{positionProp: string, sizeProp: string}} propTypes the names of the scope categories
+	 * @returns {Array<T>} the resulting array of matching values from array1 and array2
+	 */
+	var getKeysSubsetWithType = exports.getKeysSubsetWithType = function getKeysSubsetWithType(sourceArray, valuesToExtract, source, propTypes) {
+	  return (0, _reduce2.default)(sourceArray, function (valuesWithTypes, key) {
+	    if ((0, _includes2.default)(valuesToExtract, key)) {
+	      var type = getKeyType(key, propTypes);
+	
+	      if (!(0, _isNull2.default)(type)) {
+	        valuesWithTypes.push({
+	          key: key,
+	          source: source,
+	          type: type
+	        });
+	      }
+	    }
+	
+	    return valuesWithTypes;
+	  }, []);
+	};
+	
+	/**
+	 * @private
+	 * 
+	 * @function getKeysWithSourceAndType
+	 * 
+	 * @description
+	 * get the keys with mapped source (rect or element) and type (position or size)
+	 *
+	 * @param {Array<string>} keys keys to return mapped values for
+	 * @param {Object} options options passed to instance
+	 * @returns {Array<{key: string, source: string, type: string}>} keys with source and type mapped
+	 */
+	var getKeysWithSourceAndType = exports.getKeysWithSourceAndType = function getKeysWithSourceAndType(keys, options) {
+	  var propKeyNames = getPropKeyNames(options);
+	
+	  return [].concat(getKeysSubsetWithType(_constants.ALL_BOUNDING_CLIENT_RECT_KEYS, keys, _constants.CLIENT_RECT_TYPE, propKeyNames), getKeysSubsetWithType(_constants.ALL_DOM_ELEMENT_KEYS, keys, _constants.ELEMENT_TYPE, propKeyNames));
+	};
+	
+	/**
+	 * @private
+	 *
+	 * @description
+	 * based on their existence in keysToTestAgainst, determine which of the keys
+	 * passed are considered valid
+	 *
+	 * @param {Array<string>} keys the keys to test
+	 * @param {Array<string>} keysToTestAgainst the keys to find matches from
+	 * @returns {Array<string>} the resulting matching key set
+	 */
+	var getValidKeys = exports.getValidKeys = function getValidKeys(keys, keysToTestAgainst) {
+	  return (0, _filter2.default)(keys, function (key) {
+	    return (0, _includes2.default)(keysToTestAgainst, key);
+	  });
+	};
+	
+	/**
+	 * @private
+	 *
+	 * @function haveValuesChanged
+	 *
+	 * @description
+	 * iterate through keys and determine if the values have
+	 * changed compared to what is stored in state
+	 *
+	 * @param {Array<Object>} keys keys to get from the state
+	 * @param {Object} values the new values to test
+	 * @param {Object} currentState the current values in state
+	 * @returns {boolean} have any of the keys changed
+	 */
+	var haveValuesChanged = exports.haveValuesChanged = function haveValuesChanged(keys, values, currentState) {
+	  return (0, _some2.default)(keys, function (_ref9) {
+	    var key = _ref9.key;
+	
+	    return values[key] !== currentState[key];
+	  });
+	};
+	
+	/**
+	 * @private
+	 *
+	 * @function isElementVoidTag
+	 *
+	 * @description
+	 * is the element passed a void tag name
+	 *
+	 * @param {HTMLElement} element
+	 * @returns {boolean}
+	 */
+	var isElementVoidTag = exports.isElementVoidTag = function isElementVoidTag(element) {
+	  return (0, _includes2.default)(_constants.VOID_ELEMENT_TAG_NAMES, element.tagName.toUpperCase());
+	};
+	
+	/**
+	 * @private
+	 *
+	 * @function reduceStateToMatchingKeys
+	 *
+	 * @description
+	 * based on desiredKeys, build the initialState object
+	 *
+	 * @param {Array<string>} keys the keys requested from the decorator
+	 * @returns {Array<T>} the object of key: 0 default values
+	 */
+	var reduceStateToMatchingKeys = exports.reduceStateToMatchingKeys = function reduceStateToMatchingKeys(keys) {
+	  return (0, _reduce2.default)(keys, function (accumulatedInitialState, _ref10) {
+	    var key = _ref10.key;
+	
+	    accumulatedInitialState[key] = 0;
+	
+	    return accumulatedInitialState;
+	  }, {});
+	};
+
+/***/ },
+/* 15 */
 /***/ function(module, exports) {
 
 	var exports = function exports(element, fn) {
@@ -875,12 +1319,12 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 14 */
+/* 16 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var isObject = __webpack_require__(5),
-	    now = __webpack_require__(15),
-	    toNumber = __webpack_require__(18);
+	    now = __webpack_require__(17),
+	    toNumber = __webpack_require__(20);
 	
 	/** Error message constants. */
 	var FUNC_ERROR_TEXT = 'Expected a function';
@@ -1069,10 +1513,10 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 15 */
+/* 17 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var root = __webpack_require__(16);
+	var root = __webpack_require__(18);
 	
 	/**
 	 * Gets the timestamp of the number of milliseconds that have elapsed since
@@ -1098,10 +1542,10 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 16 */
+/* 18 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var freeGlobal = __webpack_require__(17);
+	var freeGlobal = __webpack_require__(19);
 	
 	/** Detect free variable `self`. */
 	var freeSelf = typeof self == 'object' && self && self.Object === Object && self;
@@ -1113,7 +1557,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 17 */
+/* 19 */
 /***/ function(module, exports) {
 
 	/* WEBPACK VAR INJECTION */(function(global) {/** Detect free variable `global` from Node.js. */
@@ -1124,7 +1568,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
 
 /***/ },
-/* 18 */
+/* 20 */
 /***/ function(module, exports) {
 
 	/**
@@ -1151,7 +1595,207 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 19 */
+/* 21 */
+/***/ function(module, exports) {
+
+	/**
+	 * A specialized version of `_.filter` for arrays without support for
+	 * iteratee shorthands.
+	 *
+	 * @private
+	 * @param {Array} [array] The array to iterate over.
+	 * @param {Function} predicate The function invoked per iteration.
+	 * @returns {Array} Returns the new filtered array.
+	 */
+	function arrayFilter(array, predicate) {
+	  var index = -1,
+	      length = array == null ? 0 : array.length,
+	      resIndex = 0,
+	      result = [];
+	
+	  while (++index < length) {
+	    var value = array[index];
+	    if (predicate(value, index, array)) {
+	      result[resIndex++] = value;
+	    }
+	  }
+	  return result;
+	}
+	
+	module.exports = arrayFilter;
+
+
+/***/ },
+/* 22 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var baseIndexOf = __webpack_require__(23);
+	
+	/**
+	 * A specialized version of `_.includes` for arrays without support for
+	 * specifying an index to search from.
+	 *
+	 * @private
+	 * @param {Array} [array] The array to inspect.
+	 * @param {*} target The value to search for.
+	 * @returns {boolean} Returns `true` if `target` is found, else `false`.
+	 */
+	function arrayIncludes(array, value) {
+	  var length = array == null ? 0 : array.length;
+	  return !!length && baseIndexOf(array, value, 0) > -1;
+	}
+	
+	module.exports = arrayIncludes;
+
+
+/***/ },
+/* 23 */
+/***/ function(module, exports) {
+
+	/**
+	 * A specialized version of `_.indexOf` which performs strict equality
+	 * comparisons of values, i.e. `===`.
+	 *
+	 * @private
+	 * @param {Array} array The array to inspect.
+	 * @param {*} value The value to search for.
+	 * @param {number} fromIndex The index to search from.
+	 * @returns {number} Returns the index of the matched value, else `-1`.
+	 */
+	function strictIndexOf(array, value, fromIndex) {
+	  var index = fromIndex - 1,
+	      length = array.length;
+	
+	  while (++index < length) {
+	    if (array[index] === value) {
+	      return index;
+	    }
+	  }
+	  return -1;
+	}
+	
+	module.exports = strictIndexOf;
+
+
+/***/ },
+/* 24 */
+/***/ function(module, exports) {
+
+	/**
+	 * Checks if `value` is `null`.
+	 *
+	 * @static
+	 * @memberOf _
+	 * @since 0.1.0
+	 * @category Lang
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is `null`, else `false`.
+	 * @example
+	 *
+	 * _.isNull(null);
+	 * // => true
+	 *
+	 * _.isNull(void 0);
+	 * // => false
+	 */
+	function isNull(value) {
+	  return value === null;
+	}
+	
+	module.exports = isNull;
+
+
+/***/ },
+/* 25 */
+/***/ function(module, exports) {
+
+	/**
+	 * Checks if `value` is `undefined`.
+	 *
+	 * @static
+	 * @since 0.1.0
+	 * @memberOf _
+	 * @category Lang
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is `undefined`, else `false`.
+	 * @example
+	 *
+	 * _.isUndefined(void 0);
+	 * // => true
+	 *
+	 * _.isUndefined(null);
+	 * // => false
+	 */
+	function isUndefined(value) {
+	  return value === undefined;
+	}
+	
+	module.exports = isUndefined;
+
+
+/***/ },
+/* 26 */
+/***/ function(module, exports) {
+
+	/**
+	 * A specialized version of `_.reduce` for arrays without support for
+	 * iteratee shorthands.
+	 *
+	 * @private
+	 * @param {Array} [array] The array to iterate over.
+	 * @param {Function} iteratee The function invoked per iteration.
+	 * @param {*} [accumulator] The initial value.
+	 * @param {boolean} [initAccum] Specify using the first element of `array` as
+	 *  the initial value.
+	 * @returns {*} Returns the accumulated value.
+	 */
+	function arrayReduce(array, iteratee, accumulator, initAccum) {
+	  var index = -1,
+	      length = array == null ? 0 : array.length;
+	
+	  if (initAccum && length) {
+	    accumulator = array[++index];
+	  }
+	  while (++index < length) {
+	    accumulator = iteratee(accumulator, array[index], index, array);
+	  }
+	  return accumulator;
+	}
+	
+	module.exports = arrayReduce;
+
+
+/***/ },
+/* 27 */
+/***/ function(module, exports) {
+
+	/**
+	 * A specialized version of `_.some` for arrays without support for iteratee
+	 * shorthands.
+	 *
+	 * @private
+	 * @param {Array} [array] The array to iterate over.
+	 * @param {Function} predicate The function invoked per iteration.
+	 * @returns {boolean} Returns `true` if any element passes the predicate check,
+	 *  else `false`.
+	 */
+	function arraySome(array, predicate) {
+	  var index = -1,
+	      length = array == null ? 0 : array.length;
+	
+	  while (++index < length) {
+	    if (predicate(array[index], index, array)) {
+	      return true;
+	    }
+	  }
+	  return false;
+	}
+	
+	module.exports = arraySome;
+
+
+/***/ },
+/* 28 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1160,11 +1804,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	  value: true
 	});
 	
-	var _Map = __webpack_require__(20);
+	var _Map = __webpack_require__(29);
 	
 	var _Map2 = _interopRequireDefault(_Map);
 	
-	var _utils = __webpack_require__(21);
+	var _utils = __webpack_require__(30);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -1265,7 +1909,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = exports['default'];
 
 /***/ },
-/* 20 */
+/* 29 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1280,7 +1924,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	// utils
 	
 	
-	var _utils = __webpack_require__(21);
+	var _utils = __webpack_require__(30);
 	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 	
@@ -1467,7 +2111,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	exports.default = HAS_MAP_SUPPORT ? Map : MapLike;
 
 /***/ },
-/* 21 */
+/* 30 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1479,7 +2123,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 	
-	var _Map = __webpack_require__(20);
+	var _Map = __webpack_require__(29);
 	
 	var _Map2 = _interopRequireDefault(_Map);
 	
@@ -2011,10 +2655,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 /***/ },
-/* 22 */
+/* 31 */
 /***/ function(module, exports, __webpack_require__) {
 
-	/* WEBPACK VAR INJECTION */(function(global) {var now = __webpack_require__(23)
+	/* WEBPACK VAR INJECTION */(function(global) {var now = __webpack_require__(32)
 	  , root = typeof window === 'undefined' ? global : window
 	  , vendors = ['moz', 'webkit']
 	  , suffix = 'AnimationFrame'
@@ -2090,7 +2734,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
 
 /***/ },
-/* 23 */
+/* 32 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {// Generated by CoffeeScript 1.7.1
@@ -2126,10 +2770,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	}).call(this);
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(24)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(33)))
 
 /***/ },
-/* 24 */
+/* 33 */
 /***/ function(module, exports) {
 
 	// shim for using process in browser
@@ -2315,544 +2959,10 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 25 */
-/***/ function(module, exports) {
-
-	module.exports = __WEBPACK_EXTERNAL_MODULE_25__;
-
-/***/ },
-/* 26 */
-/***/ function(module, exports) {
-
-	module.exports = __WEBPACK_EXTERNAL_MODULE_26__;
-
-/***/ },
-/* 27 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	exports.__esModule = true;
-	exports.reduceStateToMatchingKeys = exports.isElementVoidTag = exports.haveValuesChanged = exports.getValidKeys = exports.getScopedValues = exports.getKeysSubsetWithType = exports.getKeyType = exports.isSizeKey = exports.isPositionKey = exports.getElementValues = exports.getNaturalDimensionValue = exports.createFlattenConvenienceFunction = exports.createIsKeyType = undefined;
-	
-	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; // external dependencies
-	
-	
-	// constants
-	
-	
-	var _filter = __webpack_require__(28);
-	
-	var _filter2 = _interopRequireDefault(_filter);
-	
-	var _includes = __webpack_require__(29);
-	
-	var _includes2 = _interopRequireDefault(_includes);
-	
-	var _isFunction = __webpack_require__(3);
-	
-	var _isFunction2 = _interopRequireDefault(_isFunction);
-	
-	var _isNull = __webpack_require__(31);
-	
-	var _isNull2 = _interopRequireDefault(_isNull);
-	
-	var _isUndefined = __webpack_require__(32);
-	
-	var _isUndefined2 = _interopRequireDefault(_isUndefined);
-	
-	var _reduce = __webpack_require__(33);
-	
-	var _reduce2 = _interopRequireDefault(_reduce);
-	
-	var _some = __webpack_require__(34);
-	
-	var _some2 = _interopRequireDefault(_some);
-	
-	var _constants = __webpack_require__(11);
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
-	/**
-	 * @private
-	 *
-	 * @function createIsKeyType
-	 *
-	 * @description
-	 * create a key type checker function
-	 *
-	 * @param {Array<string>} typeArray
-	 * @returns {function(string): boolean}
-	 */
-	var createIsKeyType = exports.createIsKeyType = function createIsKeyType(typeArray) {
-	  return function (key) {
-	    return !!~typeArray.indexOf(key);
-	  };
-	};
-	
-	/**
-	 * @private
-	 *
-	 * @function createFlattenConvenienceFunction
-	 *
-	 * @description
-	 * create a convenience function that will flatten the values returned (specific to property if passed)
-	 *
-	 * @param {function} measure main measure function to get the decorator from
-	 * @param {string} [property] specific property to build convenience function for
-	 * @returns {function((Array<string>|Object|string), Object): function} decorator with flatten added as option
-	 */
-	var createFlattenConvenienceFunction = exports.createFlattenConvenienceFunction = function createFlattenConvenienceFunction(measure, property) {
-	  return function (keys) {
-	    var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
-	
-	    var decorator = measure(property || keys, _extends({}, options, {
-	      flatten: true
-	    }));
-	
-	    return (0, _isFunction2.default)(keys) ? decorator(keys) : decorator;
-	  };
-	};
-	
-	/**
-	 * @private
-	 *
-	 * @function getNaturalDimensionValue
-	 *
-	 * @description
-	 * For naturalHeight and naturalWidth, coalesce the values
-	 * with scrollHeight and scrollWIdth if the element does not
-	 * natively support it
-	 *
-	 * @param {HTMLElement} source the element to get the size / position value from
-	 * @param {string} key the size / position value to retrieve from source
-	 * @returns {number}
-	 */
-	var getNaturalDimensionValue = exports.getNaturalDimensionValue = function getNaturalDimensionValue(source, key) {
-	  var value = source[key];
-	
-	  return (0, _isUndefined2.default)(value) ? source[key.replace(_constants.NATURAL_REGEXP, 'scroll')] : value;
-	};
-	
-	/**
-	 * @private
-	 *
-	 * @function getElementValues
-	 *
-	 * @description
-	 * get the values of the element or its bounding client rect
-	 *
-	 * @param {HTMLElement} element
-	 * @param {Array<Object>} keys
-	 * @returns {Object}
-	 */
-	var getElementValues = exports.getElementValues = function getElementValues(element, keys) {
-	  var boundingClientRect = element.getBoundingClientRect();
-	
-	  return (0, _reduce2.default)(keys, function (values, _ref) {
-	    var key = _ref.key,
-	        source = _ref.source;
-	
-	    values[key] = source === _constants.CLIENT_RECT_TYPE ? boundingClientRect[key] : getNaturalDimensionValue(element, key);
-	
-	    return values;
-	  }, {});
-	};
-	
-	/**
-	 * @private
-	 *
-	 * @function isPositionKey
-	 *
-	 * @description
-	 * is the key passed a position key
-	 *
-	 * @param {string} key
-	 * @returns {boolean}
-	 */
-	var isPositionKey = exports.isPositionKey = createIsKeyType(_constants.ALL_POSITION_KEYS);
-	
-	/**
-	 * @private
-	 *
-	 * @function isSizeKey
-	 *
-	 * @description
-	 * is the key passed a size key
-	 *
-	 * @param {string} key
-	 * @returns {boolean}
-	 */
-	var isSizeKey = exports.isSizeKey = createIsKeyType(_constants.ALL_SIZE_KEYS);
-	
-	/**
-	 * @private
-	 *
-	 * @function getKeyType
-	 *
-	 * @description
-	 * get the type (position or size) of the key passed
-	 *
-	 * @param {string} key
-	 * @param {string} positionProp
-	 * @param {string} sizeProp
-	 * @returns {string}
-	 */
-	var getKeyType = exports.getKeyType = function getKeyType(key, _ref2) {
-	  var positionProp = _ref2.positionProp,
-	      sizeProp = _ref2.sizeProp;
-	
-	  if (isPositionKey(key)) {
-	    return positionProp;
-	  }
-	
-	  if (isSizeKey(key)) {
-	    return sizeProp;
-	  }
-	
-	  return null;
-	};
-	
-	/**
-	 * @private
-	 *
-	 * @function getKeysSubsetWithType
-	 *
-	 * @description
-	 * get subset of array1 based on items existing in array2
-	 *
-	 * @param {Array<*>} sourceArray the array to filter
-	 * @param {Array<*>} valuesToExtract the array to find matches in
-	 * @param {string} source the source of the value the key relates to
-	 * @param {{positionProp: string, sizeProp: string}} propTypes the names of the scope categories
-	 * @returns {Array<T>} the resulting array of matching values from array1 and array2
-	 */
-	var getKeysSubsetWithType = exports.getKeysSubsetWithType = function getKeysSubsetWithType(sourceArray, valuesToExtract, source, propTypes) {
-	  return (0, _reduce2.default)(sourceArray, function (valuesWithTypes, key) {
-	    if ((0, _includes2.default)(valuesToExtract, key)) {
-	      var type = getKeyType(key, propTypes);
-	
-	      if (!(0, _isNull2.default)(type)) {
-	        valuesWithTypes.push({
-	          key: key,
-	          source: source,
-	          type: type
-	        });
-	      }
-	    }
-	
-	    return valuesWithTypes;
-	  }, []);
-	};
-	
-	/**
-	 * @private
-	 *
-	 * @function getValues
-	 *
-	 * @description
-	 * based on the keys passed, create an object with either position
-	 * or size or both properties that are objects containing the respective
-	 * values for the associated keys
-	 *
-	 * @param {Array<string>} keys keys to associate in state
-	 * @param {Object} values state object of size / position properties
-	 * @param {boolean} isFlattened are the props passed a flattened object or not
-	 * @returns {Object} the values to pass down as props
-	 */
-	var getScopedValues = exports.getScopedValues = function getScopedValues(keys, values, isFlattened) {
-	  if (isFlattened) {
-	    return values;
-	  }
-	
-	  return (0, _reduce2.default)(keys, function (scopedValues, _ref3) {
-	    var key = _ref3.key,
-	        type = _ref3.type;
-	
-	    if (!scopedValues[type]) {
-	      scopedValues[type] = {};
-	    }
-	
-	    scopedValues[type][key] = values[key];
-	
-	    return scopedValues;
-	  }, {});
-	};
-	
-	/**
-	 * @private
-	 *
-	 * @description
-	 * based on their existence in keysToTestAgainst, determine which of the keys
-	 * passed are considered valid
-	 *
-	 * @param {Array<string>} keys the keys to test
-	 * @param {Array<string>} keysToTestAgainst the keys to find matches from
-	 * @returns {Array<string>} the resulting matching key set
-	 */
-	var getValidKeys = exports.getValidKeys = function getValidKeys(keys, keysToTestAgainst) {
-	  return (0, _filter2.default)(keys, function (key) {
-	    return (0, _includes2.default)(keysToTestAgainst, key);
-	  });
-	};
-	
-	/**
-	 * @private
-	 *
-	 * @function haveValuesChanged
-	 *
-	 * @description
-	 * iterate through keys and determine if the values have
-	 * changed compared to what is stored in state
-	 *
-	 * @param {Array<Object>} keys keys to get from the state
-	 * @param {Object} values the new values to test
-	 * @param {Object} currentState the current values in state
-	 * @returns {boolean} have any of the keys changed
-	 */
-	var haveValuesChanged = exports.haveValuesChanged = function haveValuesChanged(keys, values, currentState) {
-	  return (0, _some2.default)(keys, function (_ref4) {
-	    var key = _ref4.key;
-	
-	    return values[key] !== currentState[key];
-	  });
-	};
-	
-	/**
-	 * @private
-	 *
-	 * @function isElementVoidTag
-	 *
-	 * @description
-	 * is the element passed a void tag name
-	 *
-	 * @param {HTMLElement} element
-	 * @returns {boolean}
-	 */
-	var isElementVoidTag = exports.isElementVoidTag = function isElementVoidTag(element) {
-	  return (0, _includes2.default)(_constants.VOID_ELEMENT_TAG_NAMES, element.tagName.toUpperCase());
-	};
-	
-	/**
-	 * @private
-	 *
-	 * @function reduceStateToMatchingKeys
-	 *
-	 * @description
-	 * based on desiredKeys, build the initialState object
-	 *
-	 * @param {Array<string>} keys the keys requested from the decorator
-	 * @returns {Array<T>} the object of key: 0 default values
-	 */
-	var reduceStateToMatchingKeys = exports.reduceStateToMatchingKeys = function reduceStateToMatchingKeys(keys) {
-	  return (0, _reduce2.default)(keys, function (accumulatedInitialState, _ref5) {
-	    var key = _ref5.key;
-	
-	    accumulatedInitialState[key] = 0;
-	
-	    return accumulatedInitialState;
-	  }, {});
-	};
-
-/***/ },
-/* 28 */
-/***/ function(module, exports) {
-
-	/**
-	 * A specialized version of `_.filter` for arrays without support for
-	 * iteratee shorthands.
-	 *
-	 * @private
-	 * @param {Array} [array] The array to iterate over.
-	 * @param {Function} predicate The function invoked per iteration.
-	 * @returns {Array} Returns the new filtered array.
-	 */
-	function arrayFilter(array, predicate) {
-	  var index = -1,
-	      length = array == null ? 0 : array.length,
-	      resIndex = 0,
-	      result = [];
-	
-	  while (++index < length) {
-	    var value = array[index];
-	    if (predicate(value, index, array)) {
-	      result[resIndex++] = value;
-	    }
-	  }
-	  return result;
-	}
-	
-	module.exports = arrayFilter;
-
-
-/***/ },
-/* 29 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var baseIndexOf = __webpack_require__(30);
-	
-	/**
-	 * A specialized version of `_.includes` for arrays without support for
-	 * specifying an index to search from.
-	 *
-	 * @private
-	 * @param {Array} [array] The array to inspect.
-	 * @param {*} target The value to search for.
-	 * @returns {boolean} Returns `true` if `target` is found, else `false`.
-	 */
-	function arrayIncludes(array, value) {
-	  var length = array == null ? 0 : array.length;
-	  return !!length && baseIndexOf(array, value, 0) > -1;
-	}
-	
-	module.exports = arrayIncludes;
-
-
-/***/ },
-/* 30 */
-/***/ function(module, exports) {
-
-	/**
-	 * A specialized version of `_.indexOf` which performs strict equality
-	 * comparisons of values, i.e. `===`.
-	 *
-	 * @private
-	 * @param {Array} array The array to inspect.
-	 * @param {*} value The value to search for.
-	 * @param {number} fromIndex The index to search from.
-	 * @returns {number} Returns the index of the matched value, else `-1`.
-	 */
-	function strictIndexOf(array, value, fromIndex) {
-	  var index = fromIndex - 1,
-	      length = array.length;
-	
-	  while (++index < length) {
-	    if (array[index] === value) {
-	      return index;
-	    }
-	  }
-	  return -1;
-	}
-	
-	module.exports = strictIndexOf;
-
-
-/***/ },
-/* 31 */
-/***/ function(module, exports) {
-
-	/**
-	 * Checks if `value` is `null`.
-	 *
-	 * @static
-	 * @memberOf _
-	 * @since 0.1.0
-	 * @category Lang
-	 * @param {*} value The value to check.
-	 * @returns {boolean} Returns `true` if `value` is `null`, else `false`.
-	 * @example
-	 *
-	 * _.isNull(null);
-	 * // => true
-	 *
-	 * _.isNull(void 0);
-	 * // => false
-	 */
-	function isNull(value) {
-	  return value === null;
-	}
-	
-	module.exports = isNull;
-
-
-/***/ },
-/* 32 */
-/***/ function(module, exports) {
-
-	/**
-	 * Checks if `value` is `undefined`.
-	 *
-	 * @static
-	 * @since 0.1.0
-	 * @memberOf _
-	 * @category Lang
-	 * @param {*} value The value to check.
-	 * @returns {boolean} Returns `true` if `value` is `undefined`, else `false`.
-	 * @example
-	 *
-	 * _.isUndefined(void 0);
-	 * // => true
-	 *
-	 * _.isUndefined(null);
-	 * // => false
-	 */
-	function isUndefined(value) {
-	  return value === undefined;
-	}
-	
-	module.exports = isUndefined;
-
-
-/***/ },
-/* 33 */
-/***/ function(module, exports) {
-
-	/**
-	 * A specialized version of `_.reduce` for arrays without support for
-	 * iteratee shorthands.
-	 *
-	 * @private
-	 * @param {Array} [array] The array to iterate over.
-	 * @param {Function} iteratee The function invoked per iteration.
-	 * @param {*} [accumulator] The initial value.
-	 * @param {boolean} [initAccum] Specify using the first element of `array` as
-	 *  the initial value.
-	 * @returns {*} Returns the accumulated value.
-	 */
-	function arrayReduce(array, iteratee, accumulator, initAccum) {
-	  var index = -1,
-	      length = array == null ? 0 : array.length;
-	
-	  if (initAccum && length) {
-	    accumulator = array[++index];
-	  }
-	  while (++index < length) {
-	    accumulator = iteratee(accumulator, array[index], index, array);
-	  }
-	  return accumulator;
-	}
-	
-	module.exports = arrayReduce;
-
-
-/***/ },
 /* 34 */
 /***/ function(module, exports) {
 
-	/**
-	 * A specialized version of `_.some` for arrays without support for iteratee
-	 * shorthands.
-	 *
-	 * @private
-	 * @param {Array} [array] The array to iterate over.
-	 * @param {Function} predicate The function invoked per iteration.
-	 * @returns {boolean} Returns `true` if any element passes the predicate check,
-	 *  else `false`.
-	 */
-	function arraySome(array, predicate) {
-	  var index = -1,
-	      length = array == null ? 0 : array.length;
-	
-	  while (++index < length) {
-	    if (predicate(array[index], index, array)) {
-	      return true;
-	    }
-	  }
-	  return false;
-	}
-	
-	module.exports = arraySome;
-
+	module.exports = __WEBPACK_EXTERNAL_MODULE_34__;
 
 /***/ }
 /******/ ])
