@@ -45,8 +45,20 @@ test('if clearValues calls setState with emptyValues based on selectedKeys', (t)
   utils.clearValues(instance, selectedKeys);
 });
 
-test.todo('createComponentDidMount');
-test.todo('createComponentDidUpdate');
+test('if createRemoveInstanceElement will reset the instance values', (t) => {
+  const instance = {};
+
+  const fn = utils.createRemoveInstanceElement(instance);
+
+  t.true(_.isFunction(fn));
+
+  fn();
+
+  t.is(instance.element, null);
+  t.false(instance.hasResize);
+});
+
+test.todo('createSetInstanceElement');
 
 test('if createFlattenConvenienceFunction will return a decorator function', (t) => {
   const measure = () => {};
@@ -410,7 +422,52 @@ test('if reduceStateToMatchingKeys will return the keys mapped to an object with
   t.deepEqual(result, expectedResult);
 });
 
-test.todo('setElement');
+test('if setElement will set element to instance passed', (t) => {
+  const instance = {};
+  const element = 'foo';
+  const debounceValue = 0;
+  const renderOnResize = false;
+
+  utils.setElement(instance, element, debounceValue, renderOnResize);
+
+  t.is(instance.element, element);
+});
+
+test('if setElement will set hasResize to instance passed when element is falsy', (t) => {
+  const instance = {};
+  const element = null;
+  const debounceValue = 0;
+  const renderOnResize = false;
+
+  utils.setElement(instance, element, debounceValue, renderOnResize);
+
+  t.false(instance.hasResize);
+});
+
+test('if setElement will set hasResize to instance passed when renderOnResize is true', (t) => {
+  const instance = {};
+  const element = {
+    appendChild() {},
+    tagName: 'DIV'
+  };
+  const debounceValue = 0;
+  const renderOnResize = true;
+
+  const original = global.getComputedStyle;
+
+  global.getComputedStyle = sinon.stub();
+
+  global.getComputedStyle.returns({
+    position: 'relative'
+  });
+
+  utils.setElement(instance, element, debounceValue, renderOnResize);
+
+  t.true(instance.hasResize);
+
+  global.getComputedStyle = original;
+});
+
 test.todo('setElementResize');
 
 test('if updateValuesViaRaf will call updateValuesIfChanged on the instance after an animation frame tick', (t) => {

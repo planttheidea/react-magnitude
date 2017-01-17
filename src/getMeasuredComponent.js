@@ -3,10 +3,16 @@ import React, {
   Component
 } from 'react';
 
+// constants
+import {
+  DEFAULT_INSTANCE_ELEMENT_VALUE,
+  DEFAULT_INSTANCE_HAS_RESIZE_VALUE
+} from './constants';
+
 // utils
 import {
-  createComponentDidMount,
-  createComponentDidUpdate,
+  createRemoveInstanceElement,
+  createSetInstanceElement,
   createGetDOMElement,
   createGetScopedValues,
   createUpdateValuesIfChanged,
@@ -24,12 +30,13 @@ const getMeasuredComponent = (keys, options) => {
       };
 
       // lifecycle methods
-      componentDidMount = createComponentDidMount(this, options);
-      componentDidUpdate = createComponentDidUpdate(this, selectedKeys, options);
+      componentDidMount = createSetInstanceElement(this, selectedKeys, options);
+      componentDidUpdate = createSetInstanceElement(this, selectedKeys, options);
+      componentWillUmount = createRemoveInstanceElement(this);
 
       // instance variables
-      element = null;
-      hasResize = false;
+      element = DEFAULT_INSTANCE_ELEMENT_VALUE;
+      hasResize = DEFAULT_INSTANCE_HAS_RESIZE_VALUE;
 
       // instance methods
       getDOMElement = createGetDOMElement(this);

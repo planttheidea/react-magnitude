@@ -503,6 +503,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	var CLIENT_RECT_TYPE = exports.CLIENT_RECT_TYPE = 'clientRect';
 	var ELEMENT_TYPE = exports.ELEMENT_TYPE = 'element';
+	
+	var DEFAULT_INSTANCE_ELEMENT_VALUE = exports.DEFAULT_INSTANCE_ELEMENT_VALUE = null;
+	var DEFAULT_INSTANCE_HAS_RESIZE_VALUE = exports.DEFAULT_INSTANCE_HAS_RESIZE_VALUE = false;
 
 /***/ },
 /* 12 */
@@ -518,6 +521,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	var _react2 = _interopRequireDefault(_react);
 	
+	var _constants = __webpack_require__(11);
+	
 	var _utils = __webpack_require__(14);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
@@ -527,6 +532,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 	
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; } // external dependencies
+	
+	
+	// constants
 	
 	
 	// utils
@@ -548,7 +556,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	          args[_key] = arguments[_key];
 	        }
 	
-	        return _ret = (_temp = (_this = _possibleConstructorReturn(this, _Component.call.apply(_Component, [this].concat(args))), _this), _this.state = _extends({}, (0, _utils.reduceStateToMatchingKeys)(selectedKeys)), _this.componentDidMount = (0, _utils.createComponentDidMount)(_this, options), _this.componentDidUpdate = (0, _utils.createComponentDidUpdate)(_this, selectedKeys, options), _this.element = null, _this.hasResize = false, _this.getDOMElement = (0, _utils.createGetDOMElement)(_this), _this.getScopedValues = (0, _utils.createGetScopedValues)(), _this.updateValuesIfChanged = (0, _utils.createUpdateValuesIfChanged)(_this, selectedKeys), _temp), _possibleConstructorReturn(_this, _ret);
+	        return _ret = (_temp = (_this = _possibleConstructorReturn(this, _Component.call.apply(_Component, [this].concat(args))), _this), _this.state = _extends({}, (0, _utils.reduceStateToMatchingKeys)(selectedKeys)), _this.componentDidMount = (0, _utils.createSetInstanceElement)(_this, selectedKeys, options), _this.componentDidUpdate = (0, _utils.createSetInstanceElement)(_this, selectedKeys, options), _this.componentWillUmount = (0, _utils.createRemoveInstanceElement)(_this), _this.element = _constants.DEFAULT_INSTANCE_ELEMENT_VALUE, _this.hasResize = _constants.DEFAULT_INSTANCE_HAS_RESIZE_VALUE, _this.getDOMElement = (0, _utils.createGetDOMElement)(_this), _this.getScopedValues = (0, _utils.createGetScopedValues)(), _this.updateValuesIfChanged = (0, _utils.createUpdateValuesIfChanged)(_this, selectedKeys), _temp), _possibleConstructorReturn(_this, _ret);
 	      }
 	
 	      // lifecycle methods
@@ -589,7 +597,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 	
 	exports.__esModule = true;
-	exports.reduceStateToMatchingKeys = exports.isElementVoidTag = exports.haveValuesChanged = exports.getValidKeys = exports.getKeysWithSourceAndType = exports.getKeysSubsetWithType = exports.getKeysFromStringKey = exports.getKeyType = exports.isSizeKey = exports.isPositionKey = exports.getPropKeyNames = exports.getElementValues = exports.getNaturalDimensionValue = exports.createUpdateValuesIfChanged = exports.createGetScopedValues = exports.createGetDOMElement = exports.createFlattenConvenienceFunction = exports.createIsKeyType = exports.createComponentDidUpdate = exports.createComponentDidMount = exports.setElement = exports.setElementResize = exports.updateValuesViaRaf = exports.createUpdateValuesViaDebounce = exports.clearValues = undefined;
+	exports.reduceStateToMatchingKeys = exports.isElementVoidTag = exports.haveValuesChanged = exports.getValidKeys = exports.getKeysWithSourceAndType = exports.getKeysSubsetWithType = exports.getKeysFromStringKey = exports.getKeyType = exports.isSizeKey = exports.isPositionKey = exports.getPropKeyNames = exports.getElementValues = exports.getNaturalDimensionValue = exports.createUpdateValuesIfChanged = exports.createGetScopedValues = exports.createGetDOMElement = exports.createFlattenConvenienceFunction = exports.createIsKeyType = exports.createSetInstanceElement = exports.createRemoveInstanceElement = exports.setElement = exports.setElementResize = exports.updateValuesViaRaf = exports.createUpdateValuesViaDebounce = exports.clearValues = undefined;
 	
 	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; // external dependencies
 	
@@ -655,7 +663,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	 * @description
 	 * create function to reset all values to 0 if there is no element present
 	 *
-	 * @param {MeasuredComponent} instance component instance to clear values of
+	 * @param {MeasuredComponent} instance component instance
 	 * @param {function} instance.setState setState method of instance component
 	 * @param {Array<string>} selectedKeys keys to store in state
 	 */
@@ -675,7 +683,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	 * @description
 	 * create the function to update the values via debounce value
 	 *
-	 * @param {MeasuredComponent} instance component instance to find DOM node of
+	 * @param {MeasuredComponent} instance component instance
 	 * @param {number} debounceValue debounce value for the instance provided
 	 * @returns {function(): void} function to update the values after debounce timing has passed
 	 */
@@ -695,7 +703,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	 * @description
 	 * create the function to update the values via requestAnimationFrame
 	 *
-	 * @param {MeasuredComponent} instance component instance to find DOM node of
+	 * @param {MeasuredComponent} instance component instance
 	 */
 	var updateValuesViaRaf = exports.updateValuesViaRaf = function updateValuesViaRaf(instance) {
 	  if (instance.element) {
@@ -711,7 +719,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	 * @description
 	 * create the function to assign the onResize listener to the element
 	 *
-	 * @param {MeasuredComponent} instance component instance to find DOM node of
+	 * @param {MeasuredComponent} instance component instance
 	 * @param {number} debounceValue debounce value for the instance provided
 	 */
 	var setElementResize = exports.setElementResize = function setElementResize(instance, debounceValue) {
@@ -734,7 +742,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	 * @description
 	 * assign the element to the instance
 	 *
-	 * @param {MeasuredComponent} instance component instance to find DOM node of
+	 * @param {MeasuredComponent} instance component instance
 	 * @param {HTMLElement|null} element element to assign to instance
 	 * @param {number} debounceValue debounce value for the instance provided
 	 * @param {boolean} renderOnResize should the component rerender on resize
@@ -754,40 +762,25 @@ return /******/ (function(modules) { // webpackBootstrap
 	/**
 	 * @private
 	 *
-	 * @function createComponentDidMount
+	 * @function createRemoveInstanceElement
 	 *
 	 * @description
-	 * create the componentDidMount method for the given instance
+	 * reset instance values to their original state
 	 *
 	 * @param {MeasuredComponent} instance component instance
-	 * @param {number} [debounceValue=DEBOUNCE_VALUE_DEFAULT] value to use for debounce of updates
-	 * @param {boolean} [renderOnResize=RENDER_ON_RESIZE_DEFAULT] should the component rerender on resize
-	 * @returns {function(): void} componentDidMount method
+	 * @returns {function(): void} function to reset the instance values to defaults
 	 */
-	var createComponentDidMount = exports.createComponentDidMount = function createComponentDidMount(instance, _ref) {
-	  var _ref$debounce = _ref.debounce,
-	      debounceValue = _ref$debounce === undefined ? _constants.DEBOUNCE_VALUE_DEFAULT : _ref$debounce,
-	      _ref$renderOnResize = _ref.renderOnResize,
-	      renderOnResize = _ref$renderOnResize === undefined ? _constants.RENDER_ON_RESIZE_DEFAULT : _ref$renderOnResize;
-	
+	var createRemoveInstanceElement = exports.createRemoveInstanceElement = function createRemoveInstanceElement(instance) {
 	  return function () {
-	    var element = instance.getDOMElement();
-	
-	    if (element) {
-	      setElement(instance, element, debounceValue, renderOnResize);
-	      updateValuesViaRaf(instance);
-	    }
-	
-	    if (renderOnResize) {
-	      setElementResize(instance, debounceValue);
-	    }
+	    instance.element = _constants.DEFAULT_INSTANCE_ELEMENT_VALUE;
+	    instance.hasResize = _constants.DEFAULT_INSTANCE_HAS_RESIZE_VALUE;
 	  };
 	};
 	
 	/**
 	 * @private
 	 *
-	 * @function createComponentDidUpdate
+	 * @function createSetInstanceElement
 	 *
 	 * @description
 	 * create the componentDidUpdate method for the given instance
@@ -798,11 +791,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	 * @param {boolean} [renderOnResize=RENDER_ON_RESIZE_DEFAULT] should the component rerender on resize
 	 * @returns {function(): void} componentDidUpdate method
 	 */
-	var createComponentDidUpdate = exports.createComponentDidUpdate = function createComponentDidUpdate(instance, selectedKeys, _ref2) {
-	  var _ref2$debounce = _ref2.debounce,
-	      debounceValue = _ref2$debounce === undefined ? _constants.DEBOUNCE_VALUE_DEFAULT : _ref2$debounce,
-	      _ref2$renderOnResize = _ref2.renderOnResize,
-	      renderOnResize = _ref2$renderOnResize === undefined ? _constants.RENDER_ON_RESIZE_DEFAULT : _ref2$renderOnResize;
+	var createSetInstanceElement = exports.createSetInstanceElement = function createSetInstanceElement(instance, selectedKeys, _ref) {
+	  var _ref$debounce = _ref.debounce,
+	      debounceValue = _ref$debounce === undefined ? _constants.DEBOUNCE_VALUE_DEFAULT : _ref$debounce,
+	      _ref$renderOnResize = _ref.renderOnResize,
+	      renderOnResize = _ref$renderOnResize === undefined ? _constants.RENDER_ON_RESIZE_DEFAULT : _ref$renderOnResize;
 	
 	  return function () {
 	    var element = instance.getDOMElement();
@@ -834,7 +827,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	 */
 	var createIsKeyType = exports.createIsKeyType = function createIsKeyType(typeArray) {
 	  return function (key) {
-	    return !!~typeArray.indexOf(key);
+	    return (0, _includes2.default)(typeArray, key);
 	  };
 	};
 	
@@ -894,16 +887,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	 * @returns {function(Array<string>, Object, boolean): Object} the values to pass down as props
 	 */
 	var createGetScopedValues = exports.createGetScopedValues = function createGetScopedValues() {
-	  return (0, _moize2.default)(function (keys, values, _ref3) {
-	    var flatten = _ref3.flatten;
+	  return (0, _moize2.default)(function (keys, values, _ref2) {
+	    var flatten = _ref2.flatten;
 	
-	    if (flatten) {
-	      return values;
-	    }
-	
-	    return (0, _reduce2.default)(keys, function (scopedValues, _ref4) {
-	      var key = _ref4.key,
-	          type = _ref4.type;
+	    return flatten ? values : (0, _reduce2.default)(keys, function (scopedValues, _ref3) {
+	      var key = _ref3.key,
+	          type = _ref3.type;
 	
 	      if (!scopedValues[type]) {
 	        scopedValues[type] = {};
@@ -924,7 +913,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	 * @description
 	 * create the function to get the new values and assign them to state if they have changed
 	 *
-	 * @param {MeasuredComponent} instance component instance to find DOM node of
+	 * @param {MeasuredComponent} instance component instance
 	 * @param {function} instance.setState setState method of instance component
 	 * @param {Array<string>} selectedKeys keys to store in state
 	 * @returns {function(): void} function to update the instance state values if they have changed
@@ -978,9 +967,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	var getElementValues = exports.getElementValues = function getElementValues(element, keys) {
 	  var boundingClientRect = element.getBoundingClientRect();
 	
-	  return (0, _reduce2.default)(keys, function (values, _ref5) {
-	    var key = _ref5.key,
-	        source = _ref5.source;
+	  return (0, _reduce2.default)(keys, function (values, _ref4) {
+	    var key = _ref4.key,
+	        source = _ref4.source;
 	
 	    values[key] = source === _constants.CLIENT_RECT_TYPE ? boundingClientRect[key] : getNaturalDimensionValue(element, key);
 	
@@ -1000,11 +989,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	 * @param {string} [sizeProp=SIZE_PROP_DEFAULT] size property name
 	 * @returns {{positionProp, sizeProp}} object of positionProp and sizeProp
 	 */
-	var getPropKeyNames = exports.getPropKeyNames = function getPropKeyNames(_ref6) {
-	  var _ref6$positionProp = _ref6.positionProp,
-	      positionProp = _ref6$positionProp === undefined ? _constants.POSITION_PROP_DEFAULT : _ref6$positionProp,
-	      _ref6$sizeProp = _ref6.sizeProp,
-	      sizeProp = _ref6$sizeProp === undefined ? _constants.SIZE_PROP_DEFAULT : _ref6$sizeProp;
+	var getPropKeyNames = exports.getPropKeyNames = function getPropKeyNames(_ref5) {
+	  var _ref5$positionProp = _ref5.positionProp,
+	      positionProp = _ref5$positionProp === undefined ? _constants.POSITION_PROP_DEFAULT : _ref5$positionProp,
+	      _ref5$sizeProp = _ref5.sizeProp,
+	      sizeProp = _ref5$sizeProp === undefined ? _constants.SIZE_PROP_DEFAULT : _ref5$sizeProp;
 	
 	  return {
 	    positionProp: positionProp,
@@ -1051,9 +1040,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	 * @param {string} sizeProp
 	 * @returns {string}
 	 */
-	var getKeyType = exports.getKeyType = function getKeyType(key, _ref7) {
-	  var positionProp = _ref7.positionProp,
-	      sizeProp = _ref7.sizeProp;
+	var getKeyType = exports.getKeyType = function getKeyType(key, _ref6) {
+	  var positionProp = _ref6.positionProp,
+	      sizeProp = _ref6.sizeProp;
 	
 	  if (isPositionKey(key)) {
 	    return positionProp;
@@ -1079,11 +1068,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	 * @param {string} [sizeProp=SIZE_PROP_DEFAULT] name of position property requested in options
 	 * @returns {Array<string>} keys to store in state
 	 */
-	var getKeysFromStringKey = exports.getKeysFromStringKey = function getKeysFromStringKey(key, _ref8) {
-	  var _ref8$positionProp = _ref8.positionProp,
-	      positionProp = _ref8$positionProp === undefined ? _constants.POSITION_PROP_DEFAULT : _ref8$positionProp,
-	      _ref8$sizeProp = _ref8.sizeProp,
-	      sizeProp = _ref8$sizeProp === undefined ? _constants.SIZE_PROP_DEFAULT : _ref8$sizeProp;
+	var getKeysFromStringKey = exports.getKeysFromStringKey = function getKeysFromStringKey(key, _ref7) {
+	  var _ref7$positionProp = _ref7.positionProp,
+	      positionProp = _ref7$positionProp === undefined ? _constants.POSITION_PROP_DEFAULT : _ref7$positionProp,
+	      _ref7$sizeProp = _ref7.sizeProp,
+	      sizeProp = _ref7$sizeProp === undefined ? _constants.SIZE_PROP_DEFAULT : _ref7$sizeProp;
 	
 	  if (key === positionProp) {
 	    return _constants.ALL_POSITION_KEYS;
@@ -1178,8 +1167,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	 * @returns {boolean} have any of the keys changed
 	 */
 	var haveValuesChanged = exports.haveValuesChanged = function haveValuesChanged(keys, values, currentState) {
-	  return (0, _some2.default)(keys, function (_ref9) {
-	    var key = _ref9.key;
+	  return (0, _some2.default)(keys, function (_ref8) {
+	    var key = _ref8.key;
 	
 	    return values[key] !== currentState[key];
 	  });
@@ -1212,8 +1201,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	 * @returns {Array<T>} the object of key: 0 default values
 	 */
 	var reduceStateToMatchingKeys = exports.reduceStateToMatchingKeys = function reduceStateToMatchingKeys(keys) {
-	  return (0, _reduce2.default)(keys, function (accumulatedInitialState, _ref10) {
-	    var key = _ref10.key;
+	  return (0, _reduce2.default)(keys, function (accumulatedInitialState, _ref9) {
+	    var key = _ref9.key;
 	
 	    accumulatedInitialState[key] = 0;
 	

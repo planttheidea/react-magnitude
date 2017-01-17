@@ -22,6 +22,8 @@ import {
   ALL_SIZE_KEYS,
   CLIENT_RECT_TYPE,
   DEBOUNCE_VALUE_DEFAULT,
+  DEFAULT_INSTANCE_ELEMENT_VALUE,
+  DEFAULT_INSTANCE_HAS_RESIZE_VALUE,
   ELEMENT_TYPE,
   NATURAL_REGEXP,
   POSITION_PROP_DEFAULT,
@@ -38,7 +40,7 @@ import {
  * @description
  * create function to reset all values to 0 if there is no element present
  *
- * @param {MeasuredComponent} instance component instance to clear values of
+ * @param {MeasuredComponent} instance component instance
  * @param {function} instance.setState setState method of instance component
  * @param {Array<string>} selectedKeys keys to store in state
  */
@@ -58,7 +60,7 @@ export const clearValues = (instance, selectedKeys) => {
  * @description
  * create the function to update the values via debounce value
  *
- * @param {MeasuredComponent} instance component instance to find DOM node of
+ * @param {MeasuredComponent} instance component instance
  * @param {number} debounceValue debounce value for the instance provided
  * @returns {function(): void} function to update the values after debounce timing has passed
  */
@@ -78,7 +80,7 @@ export const createUpdateValuesViaDebounce = (instance, debounceValue) => {
  * @description
  * create the function to update the values via requestAnimationFrame
  *
- * @param {MeasuredComponent} instance component instance to find DOM node of
+ * @param {MeasuredComponent} instance component instance
  */
 export const updateValuesViaRaf = (instance) => {
   if (instance.element) {
@@ -94,7 +96,7 @@ export const updateValuesViaRaf = (instance) => {
  * @description
  * create the function to assign the onResize listener to the element
  *
- * @param {MeasuredComponent} instance component instance to find DOM node of
+ * @param {MeasuredComponent} instance component instance
  * @param {number} debounceValue debounce value for the instance provided
  */
 export const setElementResize = (instance, debounceValue) => {
@@ -119,7 +121,7 @@ export const setElementResize = (instance, debounceValue) => {
  * @description
  * assign the element to the instance
  *
- * @param {MeasuredComponent} instance component instance to find DOM node of
+ * @param {MeasuredComponent} instance component instance
  * @param {HTMLElement|null} element element to assign to instance
  * @param {number} debounceValue debounce value for the instance provided
  * @param {boolean} renderOnResize should the component rerender on resize
@@ -139,38 +141,25 @@ export const setElement = (instance, element, debounceValue, renderOnResize) => 
 /**
  * @private
  *
- * @function createComponentDidMount
+ * @function createRemoveInstanceElement
  *
  * @description
- * create the componentDidMount method for the given instance
+ * reset instance values to their original state
  *
  * @param {MeasuredComponent} instance component instance
- * @param {number} [debounceValue=DEBOUNCE_VALUE_DEFAULT] value to use for debounce of updates
- * @param {boolean} [renderOnResize=RENDER_ON_RESIZE_DEFAULT] should the component rerender on resize
- * @returns {function(): void} componentDidMount method
+ * @returns {function(): void} function to reset the instance values to defaults
  */
-export const createComponentDidMount = (instance, {
-  debounce: debounceValue = DEBOUNCE_VALUE_DEFAULT,
-  renderOnResize = RENDER_ON_RESIZE_DEFAULT
-}) => {
+export const createRemoveInstanceElement = (instance) => {
   return () => {
-    const element = instance.getDOMElement();
-
-    if (element) {
-      setElement(instance, element, debounceValue, renderOnResize);
-      updateValuesViaRaf(instance);
-    }
-
-    if (renderOnResize) {
-      setElementResize(instance, debounceValue);
-    }
+    instance.element = DEFAULT_INSTANCE_ELEMENT_VALUE;
+    instance.hasResize = DEFAULT_INSTANCE_HAS_RESIZE_VALUE;
   };
 };
 
 /**
  * @private
  *
- * @function createComponentDidUpdate
+ * @function createSetInstanceElement
  *
  * @description
  * create the componentDidUpdate method for the given instance
@@ -181,7 +170,7 @@ export const createComponentDidMount = (instance, {
  * @param {boolean} [renderOnResize=RENDER_ON_RESIZE_DEFAULT] should the component rerender on resize
  * @returns {function(): void} componentDidUpdate method
  */
-export const createComponentDidUpdate = (instance, selectedKeys, {
+export const createSetInstanceElement = (instance, selectedKeys, {
   debounce: debounceValue = DEBOUNCE_VALUE_DEFAULT,
   renderOnResize = RENDER_ON_RESIZE_DEFAULT
 }) => {
@@ -215,7 +204,7 @@ export const createComponentDidUpdate = (instance, selectedKeys, {
  */
 export const createIsKeyType = (typeArray) => {
   return (key) => {
-    return !!~typeArray.indexOf(key);
+    return includes(typeArray, key);
   };
 };
 
@@ -275,11 +264,7 @@ export const createGetDOMElement = (instance) => {
  */
 export const createGetScopedValues = () => {
   return moize((keys, values, {flatten}) => {
-    if (flatten) {
-      return values;
-    }
-
-    return reduce(keys, (scopedValues, {key, type}) => {
+    return flatten ? values : reduce(keys, (scopedValues, {key, type}) => {
       if (!scopedValues[type]) {
         scopedValues[type] = {};
       }
@@ -299,7 +284,7 @@ export const createGetScopedValues = () => {
  * @description
  * create the function to get the new values and assign them to state if they have changed
  *
- * @param {MeasuredComponent} instance component instance to find DOM node of
+ * @param {MeasuredComponent} instance component instance
  * @param {function} instance.setState setState method of instance component
  * @param {Array<string>} selectedKeys keys to store in state
  * @returns {function(): void} function to update the instance state values if they have changed
