@@ -25,9 +25,7 @@ const getMeasuredComponent = (keys, options) => {
 
   return (PassedComponent) => {
     class MeasuredComponent extends Component {
-      state = {
-        ...reduceStateToMatchingKeys(selectedKeys)
-      };
+      state = reduceStateToMatchingKeys(selectedKeys);
 
       // lifecycle methods
       componentDidMount = createSetInstanceElement(this, selectedKeys, options);
