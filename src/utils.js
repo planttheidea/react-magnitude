@@ -56,7 +56,7 @@ export const haveValuesChanged = (keys, values, currentState) => {
 /**
  * @private
  *
- * @function setValuesIfChanges
+ * @function setValuesIfChanged
  *
  * @description
  * if the values have changed and the instance is mounted then set the values in state
