@@ -133,6 +133,14 @@ const ConditionalComponent = measure(({children, isShown, position, size}) => {
   return <div>{children}</div>;
 });
 
+const FlatComponent = measure.flatten(['height', 'width'])((props) => {
+  console.group('flattened');
+  console.log(props);
+  console.groupEnd();
+
+  return <div>{props.width}</div>;
+});
+
 class App extends Component {
   state = {
     isConditionalElementShown: true
@@ -201,6 +209,8 @@ class App extends Component {
         {isConditionalElementShown && (
           <StatelessComponent>I am a stateless component that will be mounted and unmounted.</StatelessComponent>
         )}
+
+        <FlatComponent />
       </div>
     );
   }

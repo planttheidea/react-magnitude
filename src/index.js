@@ -44,4 +44,15 @@ ALL_KEYS.forEach((key) => {
   measure[key] = createFlattenConvenienceFunction(measure, key);
 });
 
+measure.flatten = (passedKeys, passedOptions = {}) => {
+  const isKeysOptions = passedKeys && passedKeys.constructor === Object;
+  const keys = isKeysOptions ? undefined : passedKeys;
+  const options = isKeysOptions ? {...passedKeys} : {...passedOptions};
+
+  return measure(keys, {
+    ...options,
+    flatten: true
+  });
+};
+
 export default measure;
