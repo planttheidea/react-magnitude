@@ -1,8 +1,4 @@
 // external dependencies
-import isArray from 'lodash/isArray';
-import isFunction from 'lodash/isFunction';
-import isPlainObject from 'lodash/isPlainObject';
-import isString from 'lodash/isString';
 import PropTypes from 'prop-types';
 
 // constants
@@ -12,7 +8,7 @@ import {ALL_KEYS, OPTIONS_SHAPE} from './constants';
 import getMeasuredComponent from './getMeasuredComponent';
 
 // utils
-import {createFlattenConvenienceFunction, getKeysFromStringKey, getValidKeys} from './utils';
+import {createFlattenConvenienceFunction, getMeasuredKeys} from './utils';
 
 /**
  * @module remeasure
@@ -33,26 +29,15 @@ import {createFlattenConvenienceFunction, getKeysFromStringKey, getValidKeys} fr
  * position values as props
  */
 const measure = (passedKeys, passedOptions = {}) => {
-  if (isFunction(passedKeys)) {
+  if (typeof passedKeys === 'function') {
     return getMeasuredComponent(ALL_KEYS, passedOptions)(passedKeys);
   }
 
-  const isKeysObject = isPlainObject(passedKeys);
-  const options = {...(isKeysObject ? passedKeys : passedOptions)};
+  const options = passedKeys && passedKeys.constructor === Object ? {...passedKeys} : {...passedOptions};
 
   PropTypes.checkPropTypes(OPTIONS_SHAPE, options, 'property', 'options');
 
-  let keys;
-
-  if (isArray(passedKeys)) {
-    keys = getValidKeys(passedKeys, ALL_KEYS);
-  } else if (isString(passedKeys)) {
-    keys = getKeysFromStringKey(passedKeys, options);
-  } else {
-    keys = ALL_KEYS;
-  }
-
-  return getMeasuredComponent(keys, options);
+  return getMeasuredComponent(getMeasuredKeys(passedKeys, options), options);
 };
 
 ALL_KEYS.forEach((key) => {

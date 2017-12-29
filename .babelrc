@@ -1,12 +1,12 @@
 {
   "env": {
     "development": {
-      "plugins": ["add-module-exports"],
       "presets": [
         [
           "env",
           {
-            "loose": true
+            "loose": true,
+            "modules": false
           }
         ],
         "react",
@@ -27,12 +27,13 @@
       ]
     },
     "production": {
-      "plugins": ["add-module-exports", "transform-react-remove-prop-types"],
+      "plugins": ["transform-react-remove-prop-types"],
       "presets": [
         [
           "env",
           {
-            "loose": true
+            "loose": true,
+            "modules": false
           }
         ],
         "react",
@@ -40,7 +41,6 @@
       ]
     },
     "test": {
-      "plugins": ["add-module-exports"],
       "presets": [
         [
           "env",

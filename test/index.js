@@ -136,19 +136,19 @@ test('if measure will accept an array value for keys', (t) => {
 
   const keys = ['height', 'width'];
 
-  const getValidKeysStub = sinon.stub(utils, 'getValidKeys').returns(keys);
+  const getMeasuredKeysStub = sinon.stub(utils, 'getMeasuredKeys').returns(keys);
 
   measure(keys);
 
   t.true(getMeasuredComponentStub.calledOnce);
-  t.true(getValidKeysStub.calledOnce);
+  t.true(getMeasuredKeysStub.calledOnce);
 
   const args = getMeasuredComponentStub.firstCall.args;
 
   t.deepEqual(args, [keys, {}]);
 
   getMeasuredComponentStub.restore();
-  getValidKeysStub.restore();
+  getMeasuredKeysStub.restore();
 });
 
 test('if measure will default to ALL_KEYS', (t) => {
