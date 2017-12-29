@@ -3,14 +3,29 @@
   "ava": {
     "babel": {
       "babelrc": true,
-      "plugins": ["transform-runtime", "transform-decorators-legacy"]
+      "plugins": [
+        "transform-runtime",
+        "transform-decorators-legacy"
+      ]
     },
     "failFast": true,
-    "files": ["test/*.js"],
-    "require": ["babel-register", "./test/helpers/setup-browser-env.js"],
+    "files": [
+      "test/*.js"
+    ],
+    "require": [
+      "babel-register",
+      "./test/helpers/setup-browser-env.js"
+    ],
     "verbose": true
   },
-  "browserslist": ["defaults", "Explorer >= 9", "Safari >= 6", "Opera >= 15", "iOS >= 8", "Android >= 4"],
+  "browserslist": [
+    "defaults",
+    "Explorer >= 9",
+    "Safari >= 6",
+    "Opera >= 15",
+    "iOS >= 8",
+    "Android >= 4"
+  ],
   "bugs": {
     "url": "https://github.com/planttheidea/remeasure/issues"
   },
@@ -91,8 +106,7 @@
     "build": "NODE_ENV=development webpack --progress --colors",
     "build:minified": "NODE_ENV=production webpack --progress --colors --config=webpack.config.minified.js",
     "build:stats": "NODE_ENV=development webpack --progress --colors --json > stats.json",
-    "build:stats:minified":
-      "NODE_ENV=production webpack --progress --colors --config=webpack.config.minified.js --json > stats.json",
+    "build:stats:minified": "NODE_ENV=production webpack --progress --colors --config=webpack.config.minified.js --json > stats.json",
     "clean": "npm run clean:dist && npm run clean:es && npm run clean:dist && npm run clean:docs",
     "clean:dist": "rimraf dist",
     "clean:docs": "rimraf docs",
@@ -104,8 +118,7 @@
     "lint": "NODE_ENV=test eslint src",
     "lint:fix": "npm run lint -- --fix",
     "prepublish": "if in-publish; then npm run prepublish:compile; fi",
-    "prepublish:compile":
-      "npm run lint && npm run test:coverage && npm run transpile:lib && npm run transpile:es && npm run dist && npm run docs",
+    "prepublish:compile": "npm run lint && npm run test:coverage && npm run transpile:lib && npm run transpile:es && npm run dist && npm run docs",
     "start": "npm run dev",
     "test": "NODE_ENV=test ava",
     "test:coverage": "nyc npm test",
@@ -114,5 +127,5 @@
     "transpile:es": "npm run clean:es && BABEL_ENV=es babel src --out-dir es",
     "transpile:lib": "npm run clean:lib && BABEL_ENV=lib babel src --out-dir lib"
   },
-  "version": "2.5.1"
+  "version": "2.6.0"
 }
