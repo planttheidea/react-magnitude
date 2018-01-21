@@ -1,129 +1,113 @@
 import React, {Component, PureComponent} from 'react';
-import {render} from 'react-dom';
 
-import measure from '../src/index';
-
-document.body.style.backgroundColor = '#1d1d1d';
-document.body.style.color = '#d5d5d5';
-document.body.style.margin = 0;
-document.body.style.padding = 0;
+import {measure} from '../src';
 
 @measure
 class NoParams extends PureComponent {
   render() {
-    const {children, position, size} = this.props;
+    const {children, ...measurements} = this.props;
 
     console.group('no params');
-    console.log('position', position);
-    console.log('size', size);
+    console.log('measurements in props', measurements);
     console.groupEnd();
 
     return <div>{children}</div>;
   }
 }
 
-@measure.width({debounce: true})
+@measure.width({debounce: 200})
 class WidthOnly extends PureComponent {
   render() {
-    const {children, position, size, width} = this.props;
+    const {children, ...measurements} = this.props;
 
     console.group('width only');
-    console.log('position', position);
-    console.log('size', size);
-    console.log('width', width);
+    console.log('measurements in props', measurements);
     console.groupEnd();
 
     return <div>{children}</div>;
   }
 }
 
-@measure('position')
+@measure(['bottom', 'left', 'right', 'top'], {namespace: 'position'})
 class PositionOnly extends PureComponent {
   render() {
-    const {children, position, size} = this.props;
+    const {children, position} = this.props;
 
     console.group('position only');
     console.log('position', position);
-    console.log('size', size);
     console.groupEnd();
 
     return <div>{children}</div>;
   }
 }
 
-@measure(['height', 'width', 'top', 'left'])
+@measure(['height', 'width', 'top', 'left'], {namespace: 'measurements'})
 class SpecificProperties extends PureComponent {
   render() {
-    const {children, position, size} = this.props;
+    const {children, measurements} = this.props;
 
-    console.group('specific properties');
-    console.log('position', position);
-    console.log('size', size);
+    console.group('specific properties with namespace');
+    console.log('measurements', measurements);
     console.groupEnd();
 
     return <div>{children}</div>;
   }
 }
 
-@measure({positionProp: 'foo', sizeProp: 'bar'})
+@measure({namespace: 'foo'})
 class CustomCategories extends PureComponent {
   render() {
-    const {bar, children, foo} = this.props;
+    const {children, foo} = this.props;
 
-    console.group('custom categories');
+    console.group('custom namespace');
     console.log('foo', foo);
-    console.log('bar', bar);
     console.groupEnd();
 
     return <div>{children}</div>;
   }
 }
 
-@measure({positionProp: 'foo', sizeProp: 'bar', inheritedMethods: ['getFoo']})
+@measure({namespace: 'foo', inheritedMethods: ['getFoo']})
 class InheritedMethods extends PureComponent {
   getFoo() {
     return this.props.foo;
   }
 
   render() {
-    const {bar, children, foo} = this.props;
+    const {children, foo} = this.props;
 
-    console.group('custom categories');
+    console.group('custom namespace with inherited methods');
     console.log('foo', foo);
-    console.log('bar', bar);
     console.groupEnd();
 
     return <div>{children}</div>;
   }
 }
 
-@measure(['height', 'width', 'top', 'left'], {positionProp: 'foo', sizeProp: 'bar'})
+@measure(['height', 'width', 'top', 'left'], {namespace: 'foo'})
 class CustomCategoriesWithSpecificProperties extends PureComponent {
   render() {
     const {bar, children, foo} = this.props;
 
-    console.group('custom categories with specific properties');
+    console.group('custom namespace with specific properties');
     console.log('foo', foo);
-    console.log('bar', bar);
     console.groupEnd();
 
     return <div>{children}</div>;
   }
 }
 
-const StatelessComponent = measure({isPure: true})(({children, position, size}) => {
+const StatelessComponent = measure({namespace: 'measurements'})(({children, measurements}) => {
   console.group('stateless component');
-  console.log('position', position);
-  console.log('size', size);
+  console.log('measurements', measurements);
   console.groupEnd();
 
   return <div>{children}</div>;
 });
 
-const ConditionalComponent = measure(({children, isShown, position, size}) => {
+const ConditionalComponent = measure({namespace: 'measurements'})(({children, isShown, measurements}) => {
   console.group('conditional component');
-  console.log('position', position);
-  console.log('size', size);
+  console.log('measurements', measurements);
   console.groupEnd();
 
   if (!isShown) {
@@ -133,12 +117,12 @@ const ConditionalComponent = measure(({children, isShown, position, size}) => {
   return <div>{children}</div>;
 });
 
-const FlatComponent = measure.flatten(['height', 'width'])((props) => {
-  console.group('flattened');
+const FlatComponent = measure(['height', 'width'])((props) => {
+  console.group('height and width');
   console.log(props);
   console.groupEnd();
 
-  return <div>{props.width}</div>;
+  return <div>width: {props.width}</div>;
 });
 
 class App extends Component {
@@ -147,8 +131,8 @@ class App extends Component {
   };
 
   componentDidMount() {
-    console.log('--------- GETTING FOO ------------');
-    console.log(this.inheritedRef.getFoo());
+    // console.log('--------- GETTING FOO ------------');
+    // console.log(this.inheritedRef.getFoo());
   }
 
   onClickToggleConditionalElement = () => {
@@ -216,10 +200,4 @@ class App extends Component {
   }
 }
 
-const div = document.createElement('div');
-
-div.id = 'app-container';
-
-render(<App />, div);
-
-document.body.appendChild(div);
+export default App;
