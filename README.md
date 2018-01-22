@@ -23,7 +23,7 @@ Get position and size of the DOM element for any React Component
 import {measure, Measured} from 'remeasure';
 
 // CommonJS
-const {measure, Measured} = require('remeasure');
+const {measure, Measured} = require('remeasure').default;
 
 // old school script
 var measure = window.Remeasure.measure;
