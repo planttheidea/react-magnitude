@@ -33,7 +33,6 @@ var Measured = window.Remeasure.Measured;
 #### As a decorator
 
 ```javascript
-// apply it as a decorator
 @measure
 class MyComponent extends React.Component {
   render() {
@@ -155,8 +154,6 @@ These properties are retrieved on mount, but will also automatically update if t
 
 ## Advanced usage
 
-If you want to limit the items that are injected into the component, you can pass either a key or array of keys to the decorator before wrapping the component.
-
 #### Keys
 
 `(Array<string>|string)`
@@ -215,11 +212,13 @@ You can apply the keys one of two ways on the `Measure` component:
 </Measured>
 ```
 
+Note that the properties will only be applied if they are set to `true` (yes, you can actually toggle what properties are measured!).
+
 #### Options
 
 `Object`
 
-You can also pass an object with any of the following properties (defaults shown):
+Allows customization of the measurements. Available options:
 
 ```javascript
 {
@@ -237,36 +236,22 @@ You can also pass an object with any of the following properties (defaults shown
 Example usage with the decorator:
 
 ```javascript
+// use them alone
 @measure({renderOnResize: false})
 class MyComponent extends Component {
-    render() {
-        const {
-            foo,
-            bar
-        } = this.props;
+  render() {
+    const {foo, bar} = this.props;
 
-        return (
-            <div>
-                The foo and bar props now represent position and size, respectively.
-            </div>
-        );
-    }
+    return <div>The foo and bar props now represent position and size, respectively.</div>;
+  }
 }
 
 // or you can use them with keys
-const measureWithKeysAndOptions = measure(
-  ['height', 'width'],
-  {debounce: 50, namespace: 'measurements'}
+const MyStatelessComponent = measure(['height', 'width'], {debounce: 50, namespace: 'measurements'})(
+  ({measurements}) => {
+    return <div>You can still pass options when you want to specify keys, as the second parameter.</div>;
+  }
 );
-
-const MyStatelessComponent = measureWithKeysAndOptions(({measurements}) => {
-    return (
-        <div>
-            You can still pass options when you want to specify keys, as the
-            second parameter.
-        </div>
-    );
-};
 ```
 
 Example usage with the `Measured` component:
@@ -281,7 +266,7 @@ Example usage with the `Measured` component:
 
 ## Convenience methods
 
-For each key that is measured, a convenience function exists on the main `measure` function. Example:
+For each key that is measured, a convenience function exists on the `measure` decorator. Example:
 
 ```javascript
 @measure.width
