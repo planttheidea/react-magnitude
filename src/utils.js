@@ -48,7 +48,7 @@ export const getMeasureKeys = (keys) => {
     }, []);
   }
 
-  if (typeof keys === 'string') {
+  if (typeof keys === 'string' && ~KEY_NAMES.indexOf(keys)) {
     return [keys];
   }
 
@@ -96,7 +96,11 @@ export const getStateKeys = (props) => {
     ...specificProperties
   } = props;
 
-  const specificKeys = Array.isArray(keys) ? keys : Object.keys(specificProperties);
+  const specificKeys = Array.isArray(keys)
+    ? keys
+    : Object.keys(specificProperties).filter((property) => {
+      return specificProperties[property];
+    });
 
   if (specificKeys.length) {
     return specificKeys.reduce((requestedKeys, key) => {

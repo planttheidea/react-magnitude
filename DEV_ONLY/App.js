@@ -127,7 +127,7 @@ const FlatComponent = measure(['height', 'width'])((props) => {
 
 class App extends Component {
   state = {
-    activeProp: ['width'],
+    activeProp: 'width',
     debounce: 500,
     isConditionalElementShown: true,
     isVisible: false
@@ -166,7 +166,7 @@ class App extends Component {
   toggleActiveProp = () => {
     this.setState(({activeProp: currentProp}) => {
       return {
-        activeProp: currentProp[0] === 'width' ? ['height'] : ['width']
+        activeProp: currentProp === 'width' ? 'height' : 'width'
       };
     });
   };
@@ -242,11 +242,8 @@ class App extends Component {
         <button onClick={this.toggleDebounce}>Toggle third component debounce</button>
 
         <Measured
-          {...activeProp.reduce((props, prop) => {
-            props[prop] = true;
-
-            return props;
-          }, {})}
+          height={activeProp === 'height'}
+          width={activeProp === 'width'}
         >
           {({height, width}) => {
             console.log('dynamic props', {height, width});
