@@ -240,9 +240,9 @@ Example usage with the decorator:
 @measure({renderOnResize: false})
 class MyComponent extends Component {
   render() {
-    const {foo, bar} = this.props;
+    const {height, width} = this.props;
 
-    return <div>The foo and bar props now represent position and size, respectively.</div>;
+    return <div>The height and width props will not update with resizes.</div>;
   }
 }
 
