@@ -290,9 +290,9 @@ export const createSetRenderMethod = (instance) => {
    * @param {function} [render] the render prop function
    */
   return ({children, component, render}) => {
-    const renderMethod = children || component || render;
+    const RenderComponent = children || component || render;
 
-    if (!IS_PRODUCTION && typeof renderMethod !== 'function') {
+    if (!IS_PRODUCTION && typeof RenderComponent !== 'function') {
       /* eslint-disable no-console */
       console.error(
         'ERROR: You must provide a render function, or either a "render" or "component" prop that passes a functional component.'
@@ -300,8 +300,8 @@ export const createSetRenderMethod = (instance) => {
       /* eslint-enable */
     }
 
-    if (renderMethod !== instance.renderMethod) {
-      instance.renderMethod = renderMethod;
+    if (RenderComponent !== instance.RenderComponent) {
+      instance.RenderComponent = RenderComponent;
     }
   };
 };
@@ -365,12 +365,13 @@ class Measured extends Component {
   componentDidMount = createComponentDidMount(this);
   componentWillReceiveProps = createComponentWillReceiveProps(this);
   componentDidUpdate = createComponentDidUpdate(this);
+  componentWillUnmount = createComponentWillUnmount(this);
 
   // instance values
   _isMounted = false;
   element = null;
   keys = [];
-  renderMethod = null;
+  RenderComponent = null;
   resizeMethod = null;
   resizeObserver = null;
 
@@ -396,12 +397,20 @@ class Measured extends Component {
       ...passThroughProps
     } = this.props;
 
-    return this.renderMethod
-      ? this.renderMethod({
-        ...passThroughProps,
-        ...this.getPassedValues(this.state, namespace)
-      })
-      : null;
+    if (!this.RenderComponent) {
+      return null;
+    }
+
+    const RenderComponent = this.RenderComponent;
+
+    return (
+      /* eslint-disable prettier */
+      <RenderComponent
+        {...passThroughProps}
+        {...this.getPassedValues(this.state, namespace)}
+      />
+      /* eslint-enable */
+    );
   }
 }
 

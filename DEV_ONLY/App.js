@@ -1,6 +1,6 @@
 import React, {Component, PureComponent} from 'react';
 
-import {measure} from '../src';
+import {measure, Measured} from '../src';
 
 @measure
 class NoParams extends PureComponent {
@@ -67,10 +67,10 @@ class CustomCategories extends PureComponent {
   }
 }
 
-@measure({namespace: 'foo', inheritedMethods: ['getFoo']})
-class InheritedMethods extends PureComponent {
+@measure({namespace: 'foo'})
+class AccessRef extends PureComponent {
   getFoo() {
-    return this.props.foo;
+    return console.log('local method', this.props.foo);
   }
 
   render() {
@@ -127,13 +127,29 @@ const FlatComponent = measure(['height', 'width'])((props) => {
 
 class App extends Component {
   state = {
-    isConditionalElementShown: true
+    activeProp: ['width'],
+    debounce: 500,
+    isConditionalElementShown: true,
+    isVisible: false
   };
 
   componentDidMount() {
-    // console.log('--------- GETTING FOO ------------');
-    // console.log(this.inheritedRef.getFoo());
+    console.group('--------- GETTING FOO ------------');
+    console.log('actual ref', this.accessRef);
+    console.log('ref originalComponent', this.accessRef.originalComponent);
+    console.log('calling originalComponent method', this.accessRef.originalComponent.getFoo());
+    console.groupEnd();
   }
+
+  componentDidUpdate(previousProps, {debounce: previousDebounce}) {
+    const {debounce} = this.state;
+
+    if (debounce !== previousDebounce) {
+      console.log(`debounce changed to ${debounce}`);
+    }
+  }
+
+  accessRef = null;
 
   onClickToggleConditionalElement = () => {
     const {isConditionalElementShown} = this.state;
@@ -143,12 +159,39 @@ class App extends Component {
     });
   };
 
-  setInheritedRef = (component) => {
-    this.inheritedRef = component;
+  setAccessRef = (component) => {
+    this.accessRef = component;
+  };
+
+  toggleActiveProp = () => {
+    this.setState(({activeProp: currentProp}) => {
+      return {
+        activeProp: currentProp[0] === 'width' ? ['height'] : ['width']
+      };
+    });
+  };
+
+  toggleDebounce = () => {
+    const min = 50;
+    const max = 1000;
+
+    this.setState(() => {
+      return {
+        debounce: ~~(Math.random() * (max - min) + min)
+      };
+    });
+  };
+
+  toggleVisibility = () => {
+    this.setState(({isVisible}) => {
+      return {
+        isVisible: !isVisible
+      };
+    });
   };
 
   render() {
-    const {isConditionalElementShown} = this.state;
+    const {activeProp, debounce, isConditionalElementShown, isVisible} = this.state;
 
     return (
       <div>
@@ -166,9 +209,7 @@ class App extends Component {
 
         <CustomCategories>I have custom position property (foo) and size property (bar).</CustomCategories>
 
-        <InheritedMethods ref={this.setInheritedRef}>
-          I have an instance method (getFoo) that is inherited by the HOC.
-        </InheritedMethods>
+        <AccessRef ref={this.setAccessRef}>I have an instance method (getFoo) that is inherited by the HOC.</AccessRef>
 
         <CustomCategoriesWithSpecificProperties>
           I only have the height and width properties in size (under the prop bar), and top and left properties in
@@ -195,6 +236,44 @@ class App extends Component {
         )}
 
         <FlatComponent />
+
+        <button onClick={this.toggleActiveProp}>Toggle first component prop watched</button>
+        <button onClick={this.toggleVisibility}>Toggle second component visibility</button>
+        <button onClick={this.toggleDebounce}>Toggle third component debounce</button>
+
+        <Measured
+          {...activeProp.reduce((props, prop) => {
+            props[prop] = true;
+
+            return props;
+          }, {})}
+        >
+          {({height, width}) => {
+            console.log('dynamic props', {height, width});
+
+            return <div>Some contained element with dynamic prop: {JSON.stringify({height, width})}</div>;
+          }}
+        </Measured>
+
+        <Measured
+          component={({height, width}) => {
+            console.log('toggled', {height, width});
+
+            return isVisible ? <div>Some other contained element</div> : null;
+          }}
+          height
+          width
+        />
+
+        <Measured
+          debounce={debounce}
+          offsetWidth
+          render={({offsetWidth}) => {
+            console.log('debounced', {offsetWidth});
+
+            return <div>Some other debounced element</div>;
+          }}
+        />
       </div>
     );
   }

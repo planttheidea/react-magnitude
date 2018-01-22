@@ -9,7 +9,7 @@ import Measured from './Measured';
 import {KEY_NAMES} from './constants';
 
 // utils
-import {getComponentName, getMeasureKeys, setInheritedMethods} from './utils';
+import {getComponentName, getMeasureKeys} from './utils';
 
 export const createSetOriginalRef = (instance) => {
   /**
@@ -33,54 +33,64 @@ export const createSetOriginalRef = (instance) => {
  * @function getMeasuredComponent
  *
  * @description
+ * get the measured component class with the ref to get the original component
+ *
+ * @param {ReactComponent} RenderedComponent the component to render
+ * @returns {ReactComponent} the measured component rendering RenderedComponent
+ */
+export const getMeasuredComponent = (RenderedComponent) => {
+  const componentPrototype = Object.getPrototypeOf(RenderedComponent);
+  const shouldSetRef = componentPrototype === Component || componentPrototype === PureComponent;
+
+  return class MeasuredComponent extends Component {
+    static displayName = `Measured(${getComponentName(RenderedComponent)})`;
+
+    static propTypes = {
+      _measuredComponentChildren: PropTypes.oneOfType([PropTypes.node, PropTypes.string]),
+      _measuredComponentRef: PropTypes.func.isRequired
+    };
+
+    render() {
+      const {_measuredComponentChildren, _measuredComponentRef, ...props} = this.props;
+
+      return (
+        /* eslint-disable prettier */
+        <RenderedComponent
+          children={_measuredComponentChildren}
+          ref={shouldSetRef ? _measuredComponentRef : null}
+          {...props}
+        />
+        /* eslint-enable */
+      );
+    }
+  };
+};
+
+/**
+ * @private
+ *
+ * @function getMeasuredHoc
+ *
+ * @description
  * get a higher-order component that renders the component passed, injecting the measurements in as props
  *
  * @param {Array<string>} keys the keys to listen for changes to
  * @param {Object} options the options passed
  * @returns {function(ReactComponent): ReactComponent} the decorator that receives the component
  */
-export const getMeasuredComponent = (keys, options) => {
-  const {
-    children: childrenOptionIgnored,
-    inheritedMethods = [],
-    render: renderOptionIgnored,
-    ...restOfOptions
-  } = options;
+export const getMeasuredHoc = (keys, options) => {
+  const {children: childrenOptionIgnored, render: renderOptionIgnored, ...restOfOptions} = options;
 
   return (RenderedComponent) => {
-    const componentPrototype = Object.getPrototypeOf(RenderedComponent);
-    const shouldApplyRef = componentPrototype === Component || componentPrototype === PureComponent;
+    const component = getMeasuredComponent(RenderedComponent);
 
-    const RenderMethod = ({_measureChildren, ...props}) => {
-      return (
-        /* eslint-disable prettier */
-        <RenderedComponent
-          children={_measureChildren}
-          {...props}
-        />
-        /* eslint-enable */
-      );
-    };
-
-    RenderMethod.propTypes = {
-      _measureChildren: PropTypes.oneOfType([PropTypes.node, PropTypes.string])
-    };
-
-    return class MeasuredComponent extends Component {
-      static displayName = `Measured(${getComponentName(RenderedComponent)})`;
+    return class MeasuredHoc extends Component {
+      static displayName = 'MeasuredHoc';
 
       static propTypes = {
         children: PropTypes.oneOfType([PropTypes.func, PropTypes.node, PropTypes.string]),
         render: PropTypes.func
       };
-
-      constructor(props) {
-        super(props);
-
-        if (inheritedMethods.length) {
-          setInheritedMethods(this, inheritedMethods);
-        }
-      }
 
       // instance values
       originalComponent = null;
@@ -92,16 +102,14 @@ export const getMeasuredComponent = (keys, options) => {
         const {children, render: renderIgnored, ...props} = this.props;
 
         return (
-          /* eslint-disable prettier */
           <Measured
             {...props}
             {...restOfOptions}
-            _measureChildren={children}
-            component={RenderMethod} // eslint-disable-line react/jsx-no-bind
+            _measuredComponentChildren={children}
+            _measuredComponentRef={this.setOriginalRef}
+            component={component}
             keys={keys}
-            ref={shouldApplyRef ? this.setOriginalRef : null}
           />
-          /* eslint-enable */
         );
       }
     };
@@ -122,8 +130,8 @@ export const getMeasuredComponent = (keys, options) => {
  */
 const measure = (passedKeys, passedOptions = {}) => {
   return typeof passedKeys === 'function'
-    ? getMeasuredComponent(KEY_NAMES, passedOptions)(passedKeys)
-    : getMeasuredComponent(
+    ? getMeasuredHoc(KEY_NAMES, passedOptions)(passedKeys)
+    : getMeasuredHoc(
       getMeasureKeys(passedKeys),
       passedKeys && passedKeys.constructor === Object ? passedKeys : passedOptions
     );

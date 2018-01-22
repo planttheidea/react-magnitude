@@ -127,26 +127,3 @@ export const getStateKeys = (props) => {
 export const isElementVoidTag = (element) => {
   return !!~VOID_ELEMENT_TAG_NAMES.indexOf(element.tagName);
 };
-
-/**
- * @private
- *
- * @description
- * set methods on this instance that will call the inherited instance method
- *
- * @param {ReactComponent} instance the instance to assign to
- * @param {Array<string>} inheritedMethods the names of inherited methods
- */
-export const setInheritedMethods = (instance, inheritedMethods) => {
-  inheritedMethods.forEach((method) => {
-    if (instance[method]) {
-      throw new ReferenceError(
-        `You cannot have the method ${method} inherited, as it is already taken by the MeasuredComponent HOC.`
-      );
-    }
-
-    instance[method] = (...args) => {
-      return instance.originalComponent[method](...args);
-    };
-  });
-};
