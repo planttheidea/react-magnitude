@@ -290,7 +290,7 @@ export const createSetRenderMethod = (instance) => {
    * @param {function} [render] the render prop function
    */
   return ({children, component, render}) => {
-    const RenderComponent = children || component || render;
+    const RenderComponent = children || component || render || null;
 
     if (!IS_PRODUCTION && typeof RenderComponent !== 'function') {
       /* eslint-disable no-console */
