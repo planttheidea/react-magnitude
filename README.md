@@ -9,8 +9,9 @@ Get position and size of the DOM element for any React Component
   * [As a component](#as-a-component)
   * [Measurements](#measurements)
 * [Advanced usage](#advanced-usage)
-  * [Keys](#keys)
-  * [Options](#options)
+  * [keys](#keys)
+  * [options](#options)
+  * [ref](#ref)
 * [Convenience methods](#convenience-methods)
 * [Caveats](#caveats)
 * [Support](#support)
@@ -154,7 +155,7 @@ These properties are retrieved on mount, but will also automatically update if t
 
 ## Advanced usage
 
-#### Keys
+#### keys
 
 `(Array<string>|string)`
 
@@ -214,7 +215,7 @@ You can apply the keys one of two ways on the `Measure` component:
 
 Note that the properties will only be applied if they are set to `true` (yes, you can actually toggle what properties are measured!).
 
-#### Options
+#### options
 
 `Object`
 
@@ -262,6 +263,40 @@ Example usage with the `Measured` component:
     return <div>My measurements: {JSON.stringify(measurements)}</div>;
   }}
 </Measured>
+```
+
+#### ref
+
+Like any other component, you can access the `Measured` component instance via the `ref`, but when using the `measure` decorator you will be accessing the `Measured` HOC and not the original component. If you want to access the original component, it is available as the `originalComponent` property on that `ref`.
+
+```javascript
+@measure.width
+class Foo extends Component {
+  getProps() {
+    return this.props;
+  }
+
+  render() {
+    return <div>Use getProps to get my props!</div>;
+  }
+}
+...
+class FooConsumer extends Component {
+  componentDidMount() {
+    console.log(this.foo); // Measured component
+    console.log(this.foo.originalComponent); // Foo component
+    console.log(this.foo.originalComponent.getProps()); // {bar: 'bar'}
+  }
+
+  render() {
+    <Foo
+      ref={(component) => {
+        this.foo = component;
+      }}
+      bar="bar"
+    />
+  }
+}
 ```
 
 ## Convenience methods
