@@ -1,9 +1,3 @@
-require('babel-register')({
-  cache: true,
-  extensions: ['.js'],
-  only: /src/
-});
-
 const browserEnv = require('browser-env');
 const enzyme = require('enzyme');
 const Adapter = require('enzyme-adapter-react-16');
@@ -11,5 +5,5 @@ const Adapter = require('enzyme-adapter-react-16');
 browserEnv();
 
 enzyme.configure({
-  adapter: new Adapter()
+  adapter: new Adapter(),
 });

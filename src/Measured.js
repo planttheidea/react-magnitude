@@ -10,6 +10,8 @@ import ResizeObserver from 'resize-observer-polyfill';
 
 // constants
 import {
+  COMPONENT_WILL_MOUNT,
+  COMPONENT_WILL_RECEIVE_PROPS,
   IS_PRODUCTION,
   KEY_NAMES,
   KEYS,
@@ -362,11 +364,11 @@ class Measured extends Component {
   state = getInitialState();
 
   // lifecycle methods
-  componentWillMount = createComponentWillMount(this);
   componentDidMount = createComponentDidMount(this);
-  componentWillReceiveProps = createComponentWillReceiveProps(this);
   componentDidUpdate = createComponentDidUpdate(this);
   componentWillUnmount = createComponentWillUnmount(this);
+  [COMPONENT_WILL_MOUNT] = createComponentWillMount(this);
+  [COMPONENT_WILL_RECEIVE_PROPS] = createComponentWillReceiveProps(this);
 
   // instance values
   _isMounted = false;

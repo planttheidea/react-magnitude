@@ -39,8 +39,15 @@ module.exports = Object.assign({}, defaultConfig, {
           ? Object.assign({}, rule, {
             include: rule.include.concat([path.resolve(ROOT, 'DEV_ONLY')]),
             options: {
-              plugins: ['react-hot-loader/babel', 'transform-decorators-legacy'],
-              presets: ['react'],
+              plugins: [
+                'react-hot-loader/babel',
+                [
+                  '@babel/plugin-proposal-decorators',
+                  {
+                    legacy: true,
+                  },
+                ],
+              ],
             },
           })
           : rule
