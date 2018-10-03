@@ -1,6 +1,12 @@
-import browserEnv from 'browser-env';
-import enzyme from 'enzyme';
-import Adapter from 'enzyme-adapter-react-16';
+require('babel-register')({
+  cache: true,
+  extensions: ['.js'],
+  only: /src/
+});
+
+const browserEnv = require('browser-env');
+const enzyme = require('enzyme');
+const Adapter = require('enzyme-adapter-react-16');
 
 browserEnv();
 
